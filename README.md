@@ -8,7 +8,7 @@ Push buttons feature debounce and EMI protection.
 The encoder function totally works ok despite relying on polling.
 
 ## Configuration
-Wire up buttons to any or all of pins: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 16, 18, 19
+Wire up buttons/switches to any or all of pins: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 16, 18, 19
 
 Wire a single optional encoder to pins: 20, 21
 

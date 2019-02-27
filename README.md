@@ -17,7 +17,7 @@ Follow
 Pre-requisites
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
 * [ArduinoJoystickLibrary](https://github.com/MHeironimus/ArduinoJoystickLibrary)
-* Flash firmware using Ardunio IDE
+* Flash firmware using Arduino IDE
 * Done!
 
 ## Usage

@@ -34,7 +34,7 @@ Joystick_ Joystick;
 
 
 #define ENCODER_HOLD 2000
-#define ENCODER_DEBOUNCE 2
+#define ENCODER_DEBOUNCE 1
 
 //Inputs pins used for buttons
 int buttonSet[] = {
@@ -161,8 +161,6 @@ void encoderPush(int encoder, int dir){
   } else if(dir < 0) {
     dir = 0;
   }
-  //Serial.print (dir);
-  //Serial.print ("\n");
   if( encoderLastDir == 0 ) {
     Joystick.setButton(rotaryDestButton[dir], HIGH);
     encoderLastDir = dir;

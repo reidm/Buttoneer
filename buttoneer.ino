@@ -55,6 +55,7 @@ int buttonSet[] = {
 };
 int buttonHoldCount[NUM_BUTTONS];
 int buttonState[NUM_BUTTONS];
+int buttonHeld[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
 int debounce[NUM_BUTTONS];
 int loopState = 0;
@@ -106,61 +107,53 @@ void setup() {
     pinMode(powerSet[i], OUTPUT);
     digitalWrite(powerSet[i], HIGH);
   }
-
   Joystick.begin();
-  
 }
-
 
 
 void loop() {
   //for(int i = loopState; i <= loopState + SAMPLE_PER_LOOP && i < NUM_BUTTONS; i++){
   state = digitalRead(buttonSet[loopState]);
-  if (state == LOW) { //  && checkDebounce(loopState)){
+  if(state == LOW && buttonState[loopState] == false) { //  && checkDebounce(loopState)){
     addPush(loopState, false);
-  } else if (state == HIGH){
-    /*if(buttonState[loopState] != 1){
-      addPush(loopState, true);
-    } else {8*/
-     remPush(loopState);
-    /*}(*/
-  }
-  //}
+  } else if (state == HIGH && buttonState[loopState] == true){
+    remPush(loopState);
+    Serial.println("rem");
+  } /*else if(state == HIGH && buttonState[loopState] == false){
+    Serial.println("add2");
+  }*/
+  
+  /* else if(state == LOW && buttonHeld[loopState] == 1) {
+    addPush(loopState, false);
+  }*/
+  
   loopState += SAMPLE_PER_LOOP;
-  if (loopState >= NUM_BUTTONS)
+  if(loopState >= NUM_BUTTONS)
     loopState = 0;
   
   int rotAIdx = rotary*2;
   int rotBIdx = rotary*2+1;
   rotaryState[rotAIdx] = digitalRead(rotarySet[rotAIdx]);
   rotaryState[rotBIdx] = digitalRead(rotarySet[rotBIdx]);
-  if((rotaryLastState[rotAIdx] == LOW) && (rotaryState[rotAIdx] == HIGH)) {
-    if (rotaryState[rotBIdx] == LOW) {
+  if ((rotaryLastState[rotAIdx] == LOW) && (rotaryState[rotAIdx] == HIGH)) {
+    if (rotaryState[rotBIdx] == LOW) 
       encoder0Pos--;
-    } else {
+    else 
       encoder0Pos++;
-    }
-
   }
 
   rotaryLastState[rotAIdx] = rotaryState[rotAIdx];
   if(encoderTimer <= 0 && encoder0Pos != 0){
-
     encoderTimer = ENCODER_HOLD;
     encoderPush(rotary, encoder0Pos);
     encoder0Pos = 0;
   }
 
-
   if(encoderTimer > 0){
     encoderTimer -= 1;
-    if(encoderTimer == 0){
+    if(encoderTimer == 0)
       encoderClear(rotary);
-    }
   }
-
-
-
 }
 
 void encoderClear(int encoder){
@@ -171,7 +164,7 @@ void encoderClear(int encoder){
 }
 
 void encoderPush(int encoder, int dir){
-  if(dir > 1 ) {
+  if( dir > 1 ) {
     dir = 1;
   } else if(dir < 0) {
     dir = 0;
@@ -185,13 +178,21 @@ void encoderPush(int encoder, int dir){
 }
 
 void remPush(int button){
-  if (buttonState[button] == 1){
+  if(buttonState[button] == 1){
     Joystick.setButton(buttonSet[button], LOW);
     Joystick.setButton(buttonHoldMap[button], LOW);
     buttonHoldCount[button] = 0;
+    buttonState[button] = 0;
+    deESD[button] = 0;
+    buttonHeld[button] = false;
+  } else if(buttonHoldCount[button] > 0 && buttonHeld[button] == true){
+    Joystick.setButton(buttonSet[button], HIGH);
+    buttonState[button] = 1;
+    buttonHeld[button] = false;
   }
-  buttonState[button] = 0;
-  deESD[button] = 0;
+
+
+
 }
 
 void addPush(int button, int force){
@@ -199,16 +200,19 @@ void addPush(int button, int force){
   if(deESD[button] > ESD_COUNT){
     if(force){
       Joystick.setButton(buttonSet[button], HIGH);
-      buttonState[button] = 1;      
+      buttonState[button] = true;      
     } else if(buttonState[button] == 0){
       if(buttonHoldTime[button] == BUTTON_INST){
         Joystick.setButton(buttonSet[button], HIGH);
-        buttonState[button] = 1;
+        buttonState[button] = true;
       }else if(buttonHoldTime[button] - buttonHoldCount[button] <= 0){
         Joystick.setButton(buttonHoldMap[button], HIGH);
-        buttonState[button] = 1;
+        buttonState[button] = true;
       } else {
         buttonHoldCount[button] += 1;
+        buttonHeld[button] = true;
+        Serial.println("ok");
+        
       }
     }
   }

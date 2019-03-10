@@ -26,23 +26,34 @@ Joystick_ Joystick;
 #define NUM_POWER 1
 
 #define ESD_COUNT 2
-#define DEBOUNCE_LEN 1
 
 #define SAMPLE_PER_LOOP 1
-
-
-
 
 #define ENCODER_HOLD 2000
 #define ENCODER_DEBOUNCE 1
 
+#define BUTTON_HOLD 1500
+#define BUTTON_INST 0
+
 //Inputs pins used for buttons
+int buttonHoldTime[] = {
+  BUTTON_INST, BUTTON_HOLD, BUTTON_INST, BUTTON_INST, BUTTON_HOLD,
+  BUTTON_HOLD, BUTTON_HOLD, BUTTON_HOLD, BUTTON_INST, BUTTON_HOLD,
+  BUTTON_HOLD, BUTTON_HOLD, BUTTON_HOLD, BUTTON_INST, BUTTON_HOLD
+};
+
+int buttonHoldMap[] = {
+  BUTTON_INST, 11, BUTTON_INST, BUTTON_INST, 12,
+  13, 15, 17, BUTTON_INST, 22,
+  23, 24, 25, BUTTON_INST, 26
+};
+
 int buttonSet[] = {
   0, 1, 2, 3, 4,
   5, 6, 7, 8, 9,
   10, 14, 16, 18, 19
 };
-
+int buttonHoldCount[NUM_BUTTONS];
 int buttonState[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
 int debounce[NUM_BUTTONS];
@@ -105,10 +116,14 @@ void setup() {
 void loop() {
   //for(int i = loopState; i <= loopState + SAMPLE_PER_LOOP && i < NUM_BUTTONS; i++){
   state = digitalRead(buttonSet[loopState]);
-  if (state == LOW && checkDebounce(loopState)){
-    addPush(loopState);
+  if (state == LOW) { //  && checkDebounce(loopState)){
+    addPush(loopState, false);
   } else if (state == HIGH){
-    remPush(loopState);
+    /*if(buttonState[loopState] != 1){
+      addPush(loopState, true);
+    } else {8*/
+     remPush(loopState);
+    /*}(*/
   }
   //}
   loopState += SAMPLE_PER_LOOP;
@@ -172,29 +187,29 @@ void encoderPush(int encoder, int dir){
 void remPush(int button){
   if (buttonState[button] == 1){
     Joystick.setButton(buttonSet[button], LOW);
+    Joystick.setButton(buttonHoldMap[button], LOW);
+    buttonHoldCount[button] = 0;
   }
   buttonState[button] = 0;
   deESD[button] = 0;
 }
 
-void addPush(int button){
+void addPush(int button, int force){
   deESD[button] += 1;
   if(deESD[button] > ESD_COUNT){
-    if(buttonState[button] == 0){
-     Joystick.setButton(buttonSet[button], HIGH);
+    if(force){
+      Joystick.setButton(buttonSet[button], HIGH);
+      buttonState[button] = 1;      
+    } else if(buttonState[button] == 0){
+      if(buttonHoldTime[button] == BUTTON_INST){
+        Joystick.setButton(buttonSet[button], HIGH);
+        buttonState[button] = 1;
+      }else if(buttonHoldTime[button] - buttonHoldCount[button] <= 0){
+        Joystick.setButton(buttonHoldMap[button], HIGH);
+        buttonState[button] = 1;
+      } else {
+        buttonHoldCount[button] += 1;
+      }
     }
-    debounce[button] = DEBOUNCE_LEN;
-    buttonState[button] = 1;
   }
-}
-
-//Return true button is available to push
-int checkDebounce(int button){
-  if (debounce[button] <= 0){
-    debounce[button] = 0;
-    return 1;
-  } else {
-    debounce[button] -= 1;
-  }
-  return 0;
 }

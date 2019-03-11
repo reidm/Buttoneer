@@ -32,6 +32,7 @@ Joystick_ Joystick;
 #define BUTTON_PUSHED 1
 #define BUTTON_HELD 2
 #define BUTTON_PUSHED_SHORT 3
+#define BUTTON_HELD_LONG 4
 #define BUTTON_PUSH_THRESH 600
 #define BUTTON_PUSH_LENGTH 200
 //List of pins used to provide high signal
@@ -134,6 +135,9 @@ void loop() {
         buttonState[loopState] = BUTTON_OFF;
         Joystick.setButton(BUTTON_SET[loopState], LOW);
       }
+    } else if(buttonState[loopState] == BUTTON_HELD_LONG){
+      Serial.println("PUSHEDLONG");
+      addLongPush(loopState);
     }
     deESD[loopState] = 0;
   }
@@ -152,6 +156,10 @@ void addShortPush(int button){
   Joystick.setButton(BUTTON_SET[button], HIGH);
 }
 
+void addLongPush(int button){
+  Serial.println("long push add");
+  
+}
 void holdManage(int button){
   buttonHoldCount[button] += 1;
   
@@ -162,6 +170,7 @@ void holdManage(int button){
     Serial.println(buttonState[button]);
     if(buttonHoldCount[button] > BUTTON_PUSH_THRESH){
       Serial.println("LONGLONGLONG");
+      buttonState[button] = BUTTON_HELD_LONG;
     }
   }
 }

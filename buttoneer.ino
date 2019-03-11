@@ -37,7 +37,7 @@ Joystick_ Joystick;
 #define BUTTON_HELD 2
 #define BUTTON_PUSHED_SHORT 3
 #define BUTTON_HELD_LONG 4
-#define BUTTON_PUSH_THRESH 1200
+#define BUTTON_PUSH_THRESH 800
 #define BUTTON_PUSH_LENGTH 450
 
 //List of pins used to provide high signal

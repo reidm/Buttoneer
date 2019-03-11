@@ -32,8 +32,8 @@ Joystick_ Joystick;
 #define BUTTON_PUSHED 1
 #define BUTTON_HELD 2
 #define BUTTON_PUSHED_SHORT 3
-#define BUTTON_PUSH_THRESH 400
-#define BUTTON_PUSH_LENGTH 600
+#define BUTTON_PUSH_THRESH 600
+#define BUTTON_PUSH_LENGTH 200
 //List of pins used to provide high signal
 int powerSet[] = {
   15
@@ -124,13 +124,13 @@ void loop() {
     } else if(buttonState[loopState] == BUTTON_HELD){
       addShortPush(loopState);
     } else if(buttonState[loopState] == BUTTON_PUSHED_SHORT) {
-      if(buttonHoldCount[loopState] >= 0){
+      if(buttonHoldCount[loopState] >= 1){
         buttonHoldCount[loopState] -= 1;
       }
 
       Serial.print("button pushed short / ");
       Serial.println(buttonHoldCount[loopState]);
-      if(buttonHoldCount[loopState] == -1){
+      if(buttonHoldCount[loopState] == 0){
         buttonState[loopState] = BUTTON_OFF;
         Joystick.setButton(BUTTON_SET[loopState], LOW);
       }

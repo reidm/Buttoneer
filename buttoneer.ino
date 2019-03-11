@@ -28,14 +28,15 @@ Joystick_ Joystick;
 #define HOLD_DEBOUNCE 50
 #define SAMPLE_PER_LOOP 1
 
+#define BUTTON_INST -1
 #define BUTTON_OFF 0
 #define BUTTON_PUSHED 1
 #define BUTTON_HELD 2
 #define BUTTON_PUSHED_SHORT 3
 #define BUTTON_HELD_LONG 4
-#define BUTTON_HOLD_RESET 5
 #define BUTTON_PUSH_THRESH 1200
 #define BUTTON_PUSH_LENGTH 450
+
 //List of pins used to provide high signal
 int powerSet[] = {
   15
@@ -61,9 +62,6 @@ int encoderLastDir = 0;
 int encoderTimer = 0;
 int encoder0Pos = 0;
 
-#define BUTTON_INST -1
-#define BUTTON_HOLD 600
-
 int HOLD_MAP[] = {
   BUTTON_INST, 11, BUTTON_INST, BUTTON_INST, 12,
   13, 15, 17, BUTTON_INST, 22,
@@ -75,17 +73,11 @@ int BUTTON_SET[] = {
   5, 6, 7, 8, 9,
   10, 14, 16, 18, 19
 };
+
 int buttonHoldCount[NUM_BUTTONS];
 int buttonState[NUM_BUTTONS];
-int buttonHeld[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
-
 int loopState = 0;
-int state;
-
-
-
-
 
 void setup() {
   int i = 0;
@@ -105,11 +97,8 @@ void setup() {
   Joystick.begin();
 }
 
-
 void loop() {
-  //for(int i = loopState; i <= loopState + SAMPLE_PER_LOOP && i < NUM_BUTTONS; i++){
-  state = digitalRead(BUTTON_SET[loopState]);
-  if(state == LOW){
+  if(digitalRead(BUTTON_SET[loopState]) == LOW){
     if(HOLD_MAP[loopState] == BUTTON_INST){
       if(buttonState[loopState] == BUTTON_OFF){
         addPush(loopState);
@@ -117,7 +106,7 @@ void loop() {
     } else {
       holdManage(loopState);
     } 
-  } else {//state==HIGH
+  } else {
     if(buttonState[loopState] == BUTTON_PUSHED){
       remPush(loopState);
     } else if(buttonState[loopState] == BUTTON_HELD){
@@ -148,7 +137,7 @@ void addShortPush(int button){
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(BUTTON_SET[button], HIGH);
 }
-//does holdcount go up or down after these??
+
 void addLongPush(int button){
   buttonState[button] = BUTTON_HELD_LONG;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
@@ -161,9 +150,7 @@ void holdManage(int button){
       buttonHoldCount[loopState] -= 1;
     }
   } else {
-  
-  buttonHoldCount[button] += 1;
-    
+    buttonHoldCount[button] += 1;
     if(buttonHoldCount[button] > HOLD_DEBOUNCE){
       buttonState[button] = BUTTON_HELD;
       if(buttonHoldCount[button] > BUTTON_PUSH_THRESH){
@@ -172,7 +159,6 @@ void holdManage(int button){
     }
   }
 }
-
 
 void addPush(int button){
   deESD[button] += 1;
@@ -194,48 +180,6 @@ void remPush(int button){
 
   } 
 }
-
-
-/* junk
- *  
- *  
-
-  /*
-  if(state == LOW && buttonState[loopState] == BUTTON_OFF) { 
-    if(HOLD_MAP[loopState] == BUTTON_INST){
-      Serial.println("soft push");
-      addPush(loopState, false);
-    } else {
-      Serial.println("hard push");
-      addPush(loopState, true);
-    }
-  }
-  else if(state == LOW && buttonState[loopState] == BUTTON_HELD && buttonHoldCount[loopState] >= 0){
-    buttonHoldCount[loopState] += 1;
-    Serial.println("Still held");
-    Serial.println(buttonHoldCount[loopState]);
-    if(buttonHoldCount[loopState] >= BUTTON_PUSHED_LONG){
-      Serial.println("LONGLONGLONG");
-      buttonState[loopState] == BUTTON_OFF;
-    }
-  } else if(state == HIGH && buttonState[loopState] == BUTTON_HELD){
-    Serial.println("Found end of push");
-    addPush(loopState, true);
-  } else if(state == HIGH && buttonState[loopState] == BUTTON_PUSHED){
-  
-
-    remPush(loopState);
-  } else {
-    deESD[loopState] = 0;
-    buttonHoldCount[loopState] = 0;
-  }*/
-  
-
-
-
-
-
-
 
 /* 
 #define ENCODER_HOLD 2000

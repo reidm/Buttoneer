@@ -28,6 +28,9 @@ Joystick_ Joystick;
 #define HOLD_DEBOUNCE 50
 #define SAMPLE_PER_LOOP 1
 
+#define ENCODER_HOLD 2000
+#define ENCODER_DEBOUNCE 3
+
 #define BUTTON_INST -1
 #define BUTTON_OFF 0
 #define BUTTON_PUSHED 1
@@ -61,6 +64,7 @@ int rotaryOutstate[2*NUM_ROTARY];
 int encoderLastDir = 0;
 int encoderTimer = 0;
 int encoder0Pos = 0;
+
 
 int HOLD_MAP[] = {
   BUTTON_INST, 11, BUTTON_INST, BUTTON_INST, 12,
@@ -128,7 +132,29 @@ void loop() {
   loopState += SAMPLE_PER_LOOP;
   if(loopState >= NUM_BUTTONS)
     loopState = 0;
-  //encoder code here
+  int rotAIdx = rotary*2;
+  int rotBIdx = rotary*2+1;
+  rotaryState[rotAIdx] = digitalRead(rotarySet[rotAIdx]);
+  rotaryState[rotBIdx] = digitalRead(rotarySet[rotBIdx]);
+  if ((rotaryLastState[rotAIdx] == LOW) && (rotaryState[rotAIdx] == HIGH)) {
+    if (rotaryState[rotBIdx] == LOW) 
+      encoder0Pos--;
+    else 
+      encoder0Pos++;
+  }
+
+  rotaryLastState[rotAIdx] = rotaryState[rotAIdx];
+  if(encoderTimer <= 0 && encoder0Pos != 0){
+    encoderTimer = ENCODER_HOLD;
+    encoderPush(rotary, encoder0Pos);
+    encoder0Pos = 0;
+  }
+
+  if(encoderTimer > 0){
+    encoderTimer -= 1;
+    if(encoderTimer == 0)
+      encoderClear(rotary);
+  }
 
 }
 
@@ -181,11 +207,6 @@ void remPush(int button){
   } 
 }
 
-/* 
-#define ENCODER_HOLD 2000
-#define ENCODER_DEBOUNCE 1
-
-
 void encoderClear(int encoder){
   Joystick.setButton(rotaryDestButton[encoderLastDir], LOW);
   delay(ENCODER_DEBOUNCE);
@@ -206,29 +227,3 @@ void encoderPush(int encoder, int dir){
     encoderLastDir = 0;
   }
 }
-*/
-  /*encoder code goes up there
-  int rotAIdx = rotary*2;
-  int rotBIdx = rotary*2+1;
-  rotaryState[rotAIdx] = digitalRead(rotarySet[rotAIdx]);
-  rotaryState[rotBIdx] = digitalRead(rotarySet[rotBIdx]);
-  if ((rotaryLastState[rotAIdx] == LOW) && (rotaryState[rotAIdx] == HIGH)) {
-    if (rotaryState[rotBIdx] == LOW) 
-      encoder0Pos--;
-    else 
-      encoder0Pos++;
-  }
-
-  rotaryLastState[rotAIdx] = rotaryState[rotAIdx];
-  if(encoderTimer <= 0 && encoder0Pos != 0){
-    encoderTimer = ENCODER_HOLD;
-    encoderPush(rotary, encoder0Pos);
-    encoder0Pos = 0;
-  }
-
-  if(encoderTimer > 0){
-    encoderTimer -= 1;
-    if(encoderTimer == 0)
-      encoderClear(rotary);
-  }
-  */

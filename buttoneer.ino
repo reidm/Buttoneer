@@ -24,7 +24,7 @@ Joystick_ Joystick;
 #define NUM_BUTTONS 15
 #define NUM_ROTARY 1
 #define NUM_POWER 1
-#define ESD_COUNT 5
+#define ESD_COUNT 3
 #define HOLD_DEBOUNCE 25
 #define SAMPLE_PER_LOOP 1
 
@@ -34,8 +34,8 @@ Joystick_ Joystick;
 #define BUTTON_PUSHED_SHORT 3
 #define BUTTON_HELD_LONG 4
 #define BUTTON_HOLD_RESET 5
-#define BUTTON_PUSH_THRESH 600
-#define BUTTON_PUSH_LENGTH 200
+#define BUTTON_PUSH_THRESH 800
+#define BUTTON_PUSH_LENGTH 250
 //List of pins used to provide high signal
 int powerSet[] = {
   15
@@ -110,10 +110,8 @@ void loop() {
   //for(int i = loopState; i <= loopState + SAMPLE_PER_LOOP && i < NUM_BUTTONS; i++){
   state = digitalRead(BUTTON_SET[loopState]);
   if(state == LOW){
-    Serial.println("Button was off");
     if(HOLD_MAP[loopState] == BUTTON_INST){
       if(buttonState[loopState] == BUTTON_OFF){
-        Serial.println("insta push");
         addPush(loopState);
       }
     } else {
@@ -121,7 +119,6 @@ void loop() {
     } 
   } else {//state==HIGH
     if(buttonState[loopState] == BUTTON_PUSHED){
-      Serial.println("remPush");
       remPush(loopState);
     } else if(buttonState[loopState] == BUTTON_HELD){
       addShortPush(loopState);
@@ -130,8 +127,6 @@ void loop() {
         buttonHoldCount[loopState] -= 1;
       }
 
-      Serial.print("button pushed short / ");
-      Serial.println(buttonHoldCount[loopState]);
       if(buttonHoldCount[loopState] == 0){
         buttonState[loopState] = BUTTON_OFF;
         Joystick.setButton(BUTTON_SET[loopState], LOW);

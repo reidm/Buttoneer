@@ -33,6 +33,7 @@ Joystick_ Joystick;
 #define BUTTON_HELD 2
 #define BUTTON_PUSHED_SHORT 3
 #define BUTTON_HELD_LONG 4
+#define BUTTON_HOLD_RESET 5
 #define BUTTON_PUSH_THRESH 600
 #define BUTTON_PUSH_LENGTH 200
 //List of pins used to provide high signal
@@ -158,6 +159,9 @@ void addShortPush(int button){
 
 void addLongPush(int button){
   Serial.println("long push add");
+  buttonState[button] = BUTTON_HOLD_RESET;
+  buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
+  Joystick.setButton(HOLD_MAP[button], HIGH);
   
 }
 void holdManage(int button){

@@ -125,7 +125,7 @@ void loop() {
       remPush(loopState);
     } else if(buttonState[loopState] == BUTTON_HELD){
       addShortPush(loopState);
-    } else if(buttonState[loopState] == BUTTON_PUSHED_SHORT) {
+    } else if(buttonState[loopState] == BUTTON_PUSHED_SHORT || buttonState[loopState] == BUTTON_HELD_LONG) {
       if(buttonHoldCount[loopState] >= 1){
         buttonHoldCount[loopState] -= 1;
       }
@@ -135,11 +135,9 @@ void loop() {
       if(buttonHoldCount[loopState] == 0){
         buttonState[loopState] = BUTTON_OFF;
         Joystick.setButton(BUTTON_SET[loopState], LOW);
+        Joystick.setButton(HOLD_MAP[loopState], LOW);
       }
-    } else if(buttonState[loopState] == BUTTON_HELD_LONG){
-      Serial.println("PUSHEDLONG");
-      addLongPush(loopState);
-    }
+    } 
     deESD[loopState] = 0;
   }
 
@@ -151,30 +149,39 @@ void loop() {
 }
 
 void addShortPush(int button){
-  Serial.println("short push add");
+  Serial.print("short push add / ");
+  Serial.println(buttonState[button]);
+  Serial.println(buttonHoldCount[button]);
   buttonState[button] = BUTTON_PUSHED_SHORT;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(BUTTON_SET[button], HIGH);
 }
-
+//does holdcount go up or down after these??
 void addLongPush(int button){
   Serial.println("long push add");
-  buttonState[button] = BUTTON_HOLD_RESET;
+  buttonState[button] = BUTTON_HELD_LONG;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(HOLD_MAP[button], HIGH);
   
 }
 void holdManage(int button){
-  buttonHoldCount[button] += 1;
+  if(buttonState[loopState] == BUTTON_PUSHED_SHORT || buttonState[loopState] == BUTTON_HELD_LONG){
+    if(buttonHoldCount[loopState] >= 1){
+      buttonHoldCount[loopState] -= 1;
+    }
+  } else {
   
-  if(buttonHoldCount[button] > HOLD_DEBOUNCE){
-    buttonState[button] = BUTTON_HELD;
-    Serial.print("Button held / ");
-    Serial.println(buttonHoldCount[button]);
-    Serial.println(buttonState[button]);
-    if(buttonHoldCount[button] > BUTTON_PUSH_THRESH){
-      Serial.println("LONGLONGLONG");
-      buttonState[button] = BUTTON_HELD_LONG;
+  buttonHoldCount[button] += 1;
+    
+    if(buttonHoldCount[button] > HOLD_DEBOUNCE){
+      buttonState[button] = BUTTON_HELD;
+      Serial.print("Button held / ");
+      Serial.println(buttonHoldCount[button]);
+      Serial.println(buttonState[button]);
+      if(buttonHoldCount[button] > BUTTON_PUSH_THRESH){
+        Serial.println("LONGLONGLONG");
+        addLongPush(button);
+      }
     }
   }
 }

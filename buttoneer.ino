@@ -25,7 +25,7 @@ Joystick_ Joystick;
 #define NUM_ROTARY 1
 #define NUM_POWER 1
 #define ESD_COUNT 3
-#define HOLD_DEBOUNCE 25
+#define HOLD_DEBOUNCE 50
 #define SAMPLE_PER_LOOP 1
 
 #define BUTTON_OFF 0
@@ -34,8 +34,8 @@ Joystick_ Joystick;
 #define BUTTON_PUSHED_SHORT 3
 #define BUTTON_HELD_LONG 4
 #define BUTTON_HOLD_RESET 5
-#define BUTTON_PUSH_THRESH 800
-#define BUTTON_PUSH_LENGTH 250
+#define BUTTON_PUSH_THRESH 1200
+#define BUTTON_PUSH_LENGTH 450
 //List of pins used to provide high signal
 int powerSet[] = {
   15
@@ -144,16 +144,12 @@ void loop() {
 }
 
 void addShortPush(int button){
-  Serial.print("short push add / ");
-  Serial.println(buttonState[button]);
-  Serial.println(buttonHoldCount[button]);
   buttonState[button] = BUTTON_PUSHED_SHORT;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(BUTTON_SET[button], HIGH);
 }
 //does holdcount go up or down after these??
 void addLongPush(int button){
-  Serial.println("long push add");
   buttonState[button] = BUTTON_HELD_LONG;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(HOLD_MAP[button], HIGH);
@@ -170,11 +166,7 @@ void holdManage(int button){
     
     if(buttonHoldCount[button] > HOLD_DEBOUNCE){
       buttonState[button] = BUTTON_HELD;
-      Serial.print("Button held / ");
-      Serial.println(buttonHoldCount[button]);
-      Serial.println(buttonState[button]);
       if(buttonHoldCount[button] > BUTTON_PUSH_THRESH){
-        Serial.println("LONGLONGLONG");
         addLongPush(button);
       }
     }
@@ -196,8 +188,6 @@ void addPush(int button){
 
 void remPush(int button){
   if(buttonState[button] > 0){
-    Serial.println("release");
-    Serial.println(buttonState[button]);
     Joystick.setButton(BUTTON_SET[button], LOW);
     buttonState[button] = BUTTON_OFF;
     deESD[button] = 0;

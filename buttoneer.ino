@@ -25,7 +25,7 @@ Joystick_ Joystick;
 #define NUM_ROTARY 1
 #define NUM_POWER 1
 #define ESD_COUNT 5
-#define HOLD_DEBOUNCE 10
+#define HOLD_DEBOUNCE 25
 #define SAMPLE_PER_LOOP 1
 
 #define BUTTON_OFF 0

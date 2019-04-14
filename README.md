@@ -5,23 +5,48 @@ Buttoneer: The Firmware turns USB compatible Arduino boards into button box cont
 ## Features
 Push buttons feature debounce and EMI protection.
 
-The encoder function totally works ok despite relying on polling.
+Supports up to 18 buttons/switches and 5 encoders.
 
-## Configuration
-Wire up buttons/switches to any or all of pins: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 16, 18, 19
+## Pinout
+```
+Arduino Pro Micro
+Legend
+------
+B - Button/switch
+E1/E2 - Encoder (Channel 1 or 2)
+    -------------
+E1B | TX0   RAW |   
+E1B | RXI   GND |
+    | GND   RST |
+    | GND   VCC |
+E1B | 2     A3  |   B
+E1B | 3     A2  |   B
+  B | 4     A1  |   B
+  B | 5     A0  |   B
+  B | 6     15  | E2B
+  B | 7     14  | E2B
+E2B | 8     16  | E2B
+E2B | 9     10  | E2B
+    -------------
+```
+Encoders have paired outputs, connect the pair to the same channel. Channel E1 two encoders,  E2 supports 3. Encoders will need a connection to VCC, and often to GND.
 
-Wire a single optional encoder to pins: 20, 21
+Buttons and switches can be connected to any input. Connect one from the button/switch to VCC, and the other to an input.
 
-Follow
-## Installation
+Each encoder reduces the button capability by 2.
+
+## Installation and Usage
 Pre-requisites
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
 * [ArduinoJoystickLibrary](https://github.com/MHeironimus/ArduinoJoystickLibrary)
-* Flash firmware using Arduino IDE
-* Done!
+* Load source ino into Arduino IDE
+* Follow [Input Configuration](#input-configuration) to set up button mappings.
+* Flash your device with your code.
+* Once the firmware is flashed, your button box will appear as a USB Game Controller.
+* Race!
 
-## Usage
-Once configured and installed, just plug your wheel in. It will appear as a USB Game Controller.
+## Input Configuration
+
 
 ## Contributing
 Feature and pull requests are always welcome.

@@ -27,7 +27,7 @@ Once configured and installed, just plug your wheel in. It will appear as a USB 
 Feature and pull requests are always welcome.
 
 ## License
-[GNU Lesser General Public License v3.00](https://www.mozilla.org/en-US/MPL/2.0/)
+[GNU GENERAL PUBLIC LICENSE Version 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 ## Attributions
 [ArduinoJoystickLibrary](https://github.com/MHeironimus/ArduinoJoystickLibrary) Copyright (c) 2015, Matthew Heironimus

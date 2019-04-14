@@ -33,7 +33,7 @@ Encoders have paired outputs, connect the pair to the same channel. Channel E1 t
 
 Buttons and switches can be connected to any input. Connect one from the button/switch to VCC, and the other to an input.
 
-Each encoder reduces the button capability by 2.
+Each encoder reduces the button capability by 2. All input pins can also be configured as additional VCC outputs, which also reduces button capacity.
 
 ## Installation and Usage
 Pre-requisites

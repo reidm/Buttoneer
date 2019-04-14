@@ -1,5 +1,5 @@
 /*
-  buttoneer.ino
+  Buttoneer.ino
 
   Copyright (c) 2019, Reid Miller
 

@@ -18,18 +18,15 @@
 */
 
 #include <Joystick.h>
-
+#include <EnableInterrupt.h>
+#include <digitalWriteFast.h>
 Joystick_ Joystick;
 
-#define NUM_BUTTONS 15
-#define NUM_ROTARY 1
-#define NUM_POWER 1
+#define NUM_BUTTONS 2
+#define NUM_POWER 0
 #define ESD_COUNT 3
 #define HOLD_DEBOUNCE 50
-#define SAMPLE_PER_LOOP 1
-
-#define ENCODER_HOLD 2000
-#define ENCODER_DEBOUNCE 3
+#define SAMPLE_PER_LOOP 2
 
 #define BUTTON_INST -1
 #define BUTTON_OFF 0
@@ -41,47 +38,58 @@ Joystick_ Joystick;
 #define BUTTON_PUSH_LENGTH 450
 
 //List of pins used to provide high signal
-int powerSet[] = {
-  15
-};
-
-//Rotary inputs, only one supported atm
-//Compatible with non-interruptable pins
-int rotarySet[] = {
-  20, 21
-};
-
-//Output for rotaries
-int rotaryDestButton[] = {
-  29, 30
-};
-
-int rotary = 0;
-int rotaryLastState[2*NUM_ROTARY];
-int rotaryState[2*NUM_ROTARY];
-int rotaryDir[NUM_ROTARY];
-int rotaryOutstate[2*NUM_ROTARY];
-int encoderLastDir = 0;
-int encoderTimer = 0;
-int encoder0Pos = 0;
-
+int powerSet[] = {};
 
 int HOLD_MAP[] = {
-  BUTTON_INST, 11, BUTTON_INST, BUTTON_INST, 12,
-  13, 15, 17, BUTTON_INST, 22,
-  23, 24, 25, BUTTON_INST, 26
+  BUTTON_INST, BUTTON_INST 
 };
 
 int BUTTON_SET[] = {
-  0, 1, 2, 3, 4,
-  5, 6, 7, 8, 9,
-  10, 14, 16, 18, 19
+  0, 1
 };
 
 int buttonHoldCount[NUM_BUTTONS];
 int buttonState[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
 int loopState = 0;
+
+volatile bool encALVal;
+volatile bool encARVal;
+volatile bool encALPrev;
+volatile bool encARPrev;
+volatile long encAPos = 0;
+long encALastPos = 0;
+long encADiff = 0;
+
+#define ENCODER_AL 8
+#define ENCODER_AR 9
+
+void encALHandle(){
+  encARVal = digitalReadFast(ENCODER_AR);
+  encALVal = digitalReadFast(ENCODER_AL);
+  encAPos += encAMove();
+  encARPrev = encARVal;
+  encALPrev = encALVal;
+}
+
+
+
+int encAMove(){
+  if(encALPrev && encARPrev){
+    if(!encALVal && encARVal) return 1;
+    if(encALVal && !encARVal) return -1;
+  } else if(!encALPrev && encARPrev){
+    if(!encALVal && !encARVal) return 1;
+    if(encALVal && encARVal) return -1;
+  } else if(!encALPrev && !encARPrev){
+    if(encALVal && !encARVal) return 1;
+    if(!encALVal && encARVal) return -1;
+  } else if(encALPrev && !encARPrev){
+    if(encALVal && encARVal) return 1;
+    if(!encALVal && !encARVal) return -1;
+  } 
+}
+
 
 void setup() {
   int i = 0;
@@ -90,26 +98,37 @@ void setup() {
     deESD[i] = 0;
     buttonState[i] = 0;
   }
-  for(i = 0; i < NUM_ROTARY * 2; i++){
-    pinMode(rotarySet[i], INPUT_PULLUP);
-    rotaryState[i] = rotaryLastState[i] = digitalRead(rotarySet[i]);
-  }
   for(i= 0; i < NUM_POWER; i++){
     pinMode(powerSet[i], OUTPUT);
     digitalWrite(powerSet[i], HIGH);
   }
   Joystick.begin();
+  Serial.begin(115200);
+  pinMode(ENCODER_AL, INPUT_PULLUP);
+  pinMode(ENCODER_AR, INPUT_PULLUP);
+  enableInterrupt(ENCODER_AL, encALHandle, CHANGE);
+  enableInterrupt(ENCODER_AR, encALHandle, CHANGE);
 }
 
 void loop() {
-  if(digitalRead(BUTTON_SET[loopState]) == LOW){
+  encADiff = encAPos - encALastPos;
+  if(encADiff >= 4 || encADiff <= -4){
+    if (encADiff > 0){
+      Serial.print("R");
+    } else {
+      Serial.print("L");
+    }
+    encAPos = encALastPos = 0;
+  }
+
+  if(digitalReadFast(BUTTON_SET[loopState]) == LOW){
     if(HOLD_MAP[loopState] == BUTTON_INST){
       if(buttonState[loopState] == BUTTON_OFF){
         addPush(loopState);
       }
     } else {
       holdManage(loopState);
-    } 
+    }
   } else {
     if(buttonState[loopState] == BUTTON_PUSHED){
       remPush(loopState);
@@ -125,36 +144,13 @@ void loop() {
         Joystick.setButton(BUTTON_SET[loopState], LOW);
         Joystick.setButton(HOLD_MAP[loopState], LOW);
       }
-    } 
+    }
     deESD[loopState] = 0;
   }
 
   loopState += SAMPLE_PER_LOOP;
   if(loopState >= NUM_BUTTONS)
     loopState = 0;
-  int rotAIdx = rotary*2;
-  int rotBIdx = rotary*2+1;
-  rotaryState[rotAIdx] = digitalRead(rotarySet[rotAIdx]);
-  rotaryState[rotBIdx] = digitalRead(rotarySet[rotBIdx]);
-  if ((rotaryLastState[rotAIdx] == LOW) && (rotaryState[rotAIdx] == HIGH)) {
-    if (rotaryState[rotBIdx] == LOW) 
-      encoder0Pos--;
-    else 
-      encoder0Pos++;
-  }
-
-  rotaryLastState[rotAIdx] = rotaryState[rotAIdx];
-  if(encoderTimer <= 0 && encoder0Pos != 0){
-    encoderTimer = ENCODER_HOLD;
-    encoderPush(rotary, encoder0Pos);
-    encoder0Pos = 0;
-  }
-
-  if(encoderTimer > 0){
-    encoderTimer -= 1;
-    if(encoderTimer == 0)
-      encoderClear(rotary);
-  }
 
 }
 
@@ -168,7 +164,7 @@ void addLongPush(int button){
   buttonState[button] = BUTTON_HELD_LONG;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(HOLD_MAP[button], HIGH);
-  
+
 }
 void holdManage(int button){
   if(buttonState[loopState] == BUTTON_PUSHED_SHORT || buttonState[loopState] == BUTTON_HELD_LONG){
@@ -204,9 +200,10 @@ void remPush(int button){
     buttonState[button] = BUTTON_OFF;
     deESD[button] = 0;
 
-  } 
+  }
 }
 
+/*
 void encoderClear(int encoder){
   Joystick.setButton(rotaryDestButton[encoderLastDir], LOW);
   delay(ENCODER_DEBOUNCE);
@@ -226,4 +223,4 @@ void encoderPush(int encoder, int dir){
   } else {
     encoderLastDir = 0;
   }
-}
+}*/

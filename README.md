@@ -58,3 +58,4 @@ Feature and pull requests are always welcome.
 ## Attributions
 * [ArduinoJoystickLibrary](https://github.com/MHeironimus/ArduinoJoystickLibrary) Copyright (c) 2015, Matthew Heironimus
 * [EnableInterrupt](https://github.com/GreyGnome/EnableInterrupt) By GreyGnome
+* [digitalWriteFast](https://github.com/watterott/Arduino-Libs) of [Mysterious Origins](https://code.google.com/archive/p/digitalwritefast/downloads)

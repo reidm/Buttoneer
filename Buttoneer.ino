@@ -48,6 +48,10 @@ int BUTTON_SET[] = {
   0, 1
 };
 
+int BUTTON_MATRIX_SET[] = {
+  14, 16, 10
+};
+
 int buttonHoldCount[NUM_BUTTONS];
 int buttonState[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
@@ -57,10 +61,9 @@ volatile bool encALVal;
 volatile bool encARVal;
 volatile bool encALPrev;
 volatile bool encARPrev;
-volatile long encAPos = 0;
-long encALastPos = 0;
-long encADiff = 0;
-
+volatile long encAPos = 12000;
+long encALastPos = 12000;
+long encPosition = 0;
 #define ENCODER_AL 8
 #define ENCODER_AR 9
 
@@ -68,6 +71,7 @@ void encALHandle(){
   encARVal = digitalReadFast(ENCODER_AR);
   encALVal = digitalReadFast(ENCODER_AL);
   encAPos += encAMove();
+  //Serial.println(encAPos);
   encARPrev = encARVal;
   encALPrev = encALVal;
 }
@@ -111,14 +115,18 @@ void setup() {
 }
 
 void loop() {
-  encADiff = encAPos - encALastPos;
+  long encADiff = encAPos - encALastPos;
   if(encADiff >= 4 || encADiff <= -4){
+    Serial.print(encAPos);
+    Serial.print(" - ");
+    Serial.print(encALastPos);
     if (encADiff > 0){
-      Serial.print("R");
+      addEncoderClick(ENCODER_AR);
     } else {
-      Serial.print("L");
+      addEncoderClick(ENCODER_AL);
     }
-    encAPos = encALastPos = 0;
+    encALastPos = encAPos;
+    //encAPos = encALastPos = 0;
   }
 
   if(digitalReadFast(BUTTON_SET[loopState]) == LOW){
@@ -187,6 +195,7 @@ void addPush(int button){
   if(deESD[button] > ESD_COUNT){
     if(buttonState[button] == BUTTON_OFF){
       if(HOLD_MAP[button] == BUTTON_INST){
+        Serial.print(button);
         Joystick.setButton(BUTTON_SET[button], HIGH);
         buttonState[button] = BUTTON_PUSHED;
       }
@@ -200,6 +209,18 @@ void remPush(int button){
     buttonState[button] = BUTTON_OFF;
     deESD[button] = 0;
 
+  }
+}
+
+void addEncoderClick(int button){
+  if(button == ENCODER_AL){
+    encPosition += 1;
+    Serial.print("L");
+    Serial.println(encPosition);
+  } else {
+    encPosition -= 1;
+    Serial.print("R");
+    Serial.println(encPosition);
   }
 }
 

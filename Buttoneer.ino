@@ -70,7 +70,8 @@ long encPosition = 0;
 void encALHandle(){
   encARVal = digitalReadFast(ENCODER_AR);
   encALVal = digitalReadFast(ENCODER_AL);
-  encAPos += encAMove();
+  //encAPos += encAMove();
+  encAMove();
   //Serial.println(encAPos);
   encARPrev = encARVal;
   encALPrev = encALVal;
@@ -79,19 +80,36 @@ void encALHandle(){
 
 
 int encAMove(){
+  int ret = 0;
   if(encALPrev && encARPrev){
-    if(!encALVal && encARVal) return 1;
-    if(encALVal && !encARVal) return -1;
+    if(!encALVal && encARVal) ret = 1;
+    if(encALVal && !encARVal) ret = -1;
   } else if(!encALPrev && encARPrev){
-    if(!encALVal && !encARVal) return 1;
-    if(encALVal && encARVal) return -1;
+    if(!encALVal && !encARVal) ret = 1;
+    if(encALVal && encARVal) ret = -1;
   } else if(!encALPrev && !encARPrev){
-    if(encALVal && !encARVal) return 1;
-    if(!encALVal && encARVal) return -1;
+    if(encALVal && !encARVal) ret = 1;
+    if(!encALVal && encARVal) ret = -1;
   } else if(encALPrev && !encARPrev){
-    if(encALVal && encARVal) return 1;
-    if(!encALVal && !encARVal) return -1;
+    if(encALVal && encARVal) ret = 1;
+    if(!encALVal && !encARVal) ret = -1;
   } 
+  encAPos += ret;
+  long encADiff = encAPos - encALastPos;
+  if(encADiff >= 4 || encADiff <= -4){
+    Serial.print(encAPos);
+    Serial.print(" - ");
+    Serial.print(encALastPos);
+    if (encADiff > 0){
+      addEncoderClick(ENCODER_AR);
+    } else {
+      addEncoderClick(ENCODER_AL);
+    }
+    encALastPos = encAPos;
+    //encAPos = encALastPos = 0;
+  }
+
+  return 0;
 }
 
 
@@ -115,19 +133,6 @@ void setup() {
 }
 
 void loop() {
-  long encADiff = encAPos - encALastPos;
-  if(encADiff >= 4 || encADiff <= -4){
-    Serial.print(encAPos);
-    Serial.print(" - ");
-    Serial.print(encALastPos);
-    if (encADiff > 0){
-      addEncoderClick(ENCODER_AR);
-    } else {
-      addEncoderClick(ENCODER_AL);
-    }
-    encALastPos = encAPos;
-    //encAPos = encALastPos = 0;
-  }
 
   if(digitalReadFast(BUTTON_SET[loopState]) == LOW){
     if(HOLD_MAP[loopState] == BUTTON_INST){

@@ -1,5 +1,5 @@
 /*
-  Buttoneer <Encoder.h>
+  Buttoneer <ButtoneerHID.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,34 +16,16 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef Encoder_h
-#define Encoder_h
+#ifndef ButtoneerHID_h
+#define ButtoneerHID_h
 
 #include "Arduino.h"
+//#include <Joystick.h>
 
-class Encoder{
+class ButtoneerHID{
   public:
-    Encoder(int pinA, int pinB);
-    void move();
-    //void click();
-  private:
-    int _pin;
-    volatile bool encALVal;
-    volatile bool encARVal;
-    volatile bool encALPrev;
-    volatile bool encARPrev;
-    volatile long encAPos;
-    volatile bool encDir;
-    volatile long encALastPos;
-    volatile long encPosition;
-
+    ButtoneerHID();
+    void ping();
 };
 
 #endif
-
-/*
-volatile long encAPos = 12000;
-volatile bool encDir = 0;
-volatile long encALastPos = 12000;
-long encPosition = 0;
-*/

@@ -20,6 +20,7 @@
 #include <Joystick.h>
 #include <EnableInterrupt.h>
 //#include <digitalWriteFast.h>
+#include "ButtoneerHID.h"
 #include "Encoder.h"
 Joystick_ Joystick;
 
@@ -72,6 +73,7 @@ long encPosition = 0;
 #define ENCODER_AR 9
 
 Encoder enc(ENCODER_AR, ENCODER_AL);
+ButtoneerHID hid;
 
 void encALHandle(){
   encARVal = digitalRead(ENCODER_AR);
@@ -233,6 +235,7 @@ void remPush(int button){
 }
 
 void addEncClick(int button){
+  hid.ping();
   enc.move();
   if(button == ENCODER_AL){
     encPosition += 1;

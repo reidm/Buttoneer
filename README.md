@@ -29,7 +29,7 @@ E2B | 8     16  | E2B
 E2B | 9     10  | E2B
     -------------
 ```
-Encoders have paired outputs, connect the pair to the same channel. Channel E1 two encoders,  E2 supports 3. Encoders will need a connection to VCC, and GND(?).
+Encoders have paired outputs, connect the pair to the same channel. Channel E1 two encoders,  E2 supports three. 
 
 Buttons and switches can be connected to any input. Connect one from the button/switch to VCC, and the other to an input.
 

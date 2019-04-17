@@ -19,7 +19,8 @@
 
 #include <Joystick.h>
 #include <EnableInterrupt.h>
-#include <digitalWriteFast.h>
+//#include <digitalWriteFast.h>
+#include "Encoder.h"
 Joystick_ Joystick;
 
 #define NUM_BUTTONS 2
@@ -43,7 +44,7 @@ Joystick_ Joystick;
 int powerSet[] = {};
 
 int HOLD_MAP[] = {
-  BUTTON_INST, BUTTON_INST 
+  BUTTON_INST, BUTTON_INST
 };
 
 int BUTTON_SET[] = {
@@ -70,12 +71,12 @@ long encPosition = 0;
 #define ENCODER_AL 8
 #define ENCODER_AR 9
 
+Encoder enc(ENCODER_AR, ENCODER_AL);
+
 void encALHandle(){
-  encARVal = digitalReadFast(ENCODER_AR);
-  encALVal = digitalReadFast(ENCODER_AL);
-  //encAPos += encAMove();
+  encARVal = digitalRead(ENCODER_AR);
+  encALVal = digitalRead(ENCODER_AL);
   encAMove();
-  //Serial.println(encAPos);
   encARPrev = encARVal;
   encALPrev = encALVal;
 }
@@ -96,7 +97,7 @@ int encAMove(){
   } else if(encALPrev && !encARPrev){
     if(encALVal && encARVal) ret = 1;
     if(!encALVal && !encARVal) ret = -1;
-  } 
+  }
   encAPos += ret;
   long encADiff = encAPos - encALastPos;
   if(encADiff >= 4 || encADiff <= -4 || encADiff == 0){
@@ -112,7 +113,6 @@ int encAMove(){
       else if(encDir == RIGHT) addEncClick(ENCODER_AL);
     }
     encALastPos = encAPos;
-    //encAPos = encALastPos = 12000;
   }/* else {
     Serial.print(encAPos);
     Serial.print(" - ");
@@ -140,15 +140,16 @@ void setup() {
   pinMode(ENCODER_AR, INPUT_PULLUP);
   enableInterrupt(ENCODER_AL, encALHandle, CHANGE);
   enableInterrupt(ENCODER_AR, encALHandle, CHANGE);
-  encARVal = digitalReadFast(ENCODER_AR);
-  encALVal = digitalReadFast(ENCODER_AL);
+  encARVal = digitalRead(ENCODER_AR);
+  encALVal = digitalRead(ENCODER_AL);
   encARPrev = encARVal;
   encALPrev = encALVal;
+
 }
 
 void loop() {
 
-  if(digitalReadFast(BUTTON_SET[loopState]) == LOW){
+  if(digitalRead(BUTTON_SET[loopState]) == LOW){
     if(HOLD_MAP[loopState] == BUTTON_INST){
       if(buttonState[loopState] == BUTTON_OFF){
         addPush(loopState);
@@ -232,6 +233,7 @@ void remPush(int button){
 }
 
 void addEncClick(int button){
+  enc.move();
   if(button == ENCODER_AL){
     encPosition += 1;
     encDir = LEFT;

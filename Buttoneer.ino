@@ -37,6 +37,8 @@ Joystick_ Joystick;
 #define BUTTON_PUSH_THRESH 800
 #define BUTTON_PUSH_LENGTH 450
 
+#define LEFT 0
+#define RIGHT 1
 //List of pins used to provide high signal
 int powerSet[] = {};
 
@@ -62,7 +64,8 @@ volatile bool encARVal;
 volatile bool encALPrev;
 volatile bool encARPrev;
 volatile long encAPos = 12000;
-long encALastPos = 12000;
+volatile bool encDir = 0;
+volatile long encALastPos = 12000;
 long encPosition = 0;
 #define ENCODER_AL 8
 #define ENCODER_AR 9
@@ -96,17 +99,24 @@ int encAMove(){
   } 
   encAPos += ret;
   long encADiff = encAPos - encALastPos;
-  if(encADiff >= 4 || encADiff <= -4){
+  if(encADiff >= 4 || encADiff <= -4 || encADiff == 0){
     Serial.print(encAPos);
     Serial.print(" - ");
     Serial.print(encALastPos);
     if (encADiff > 0){
-      addEncoderClick(ENCODER_AR);
+      addEncClick(ENCODER_AR);
+    } else if (encADiff < 0){
+      addEncClick(ENCODER_AL);
     } else {
-      addEncoderClick(ENCODER_AL);
+      if(encDir = LEFT) addEncClick(ENCODER_AR);
+      else if(encDir == RIGHT) addEncClick(ENCODER_AL);
     }
     encALastPos = encAPos;
-    //encAPos = encALastPos = 0;
+    //encAPos = encALastPos = 12000;
+  } else {
+    Serial.print(encAPos);
+    Serial.print(" - ");
+    Serial.println(encALastPos);
   }
 
   return 0;
@@ -130,6 +140,10 @@ void setup() {
   pinMode(ENCODER_AR, INPUT_PULLUP);
   enableInterrupt(ENCODER_AL, encALHandle, CHANGE);
   enableInterrupt(ENCODER_AR, encALHandle, CHANGE);
+  encARVal = digitalReadFast(ENCODER_AR);
+  encALVal = digitalReadFast(ENCODER_AL);
+  encARPrev = encARVal;
+  encALPrev = encALVal;
 }
 
 void loop() {
@@ -217,12 +231,14 @@ void remPush(int button){
   }
 }
 
-void addEncoderClick(int button){
+void addEncClick(int button){
   if(button == ENCODER_AL){
     encPosition += 1;
+    encDir = LEFT;
     Serial.print("L");
     Serial.println(encPosition);
   } else {
+    encDir = RIGHT;
     encPosition -= 1;
     Serial.print("R");
     Serial.println(encPosition);

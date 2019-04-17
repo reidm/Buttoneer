@@ -100,9 +100,9 @@ int encAMove(){
   encAPos += ret;
   long encADiff = encAPos - encALastPos;
   if(encADiff >= 4 || encADiff <= -4 || encADiff == 0){
-    Serial.print(encAPos);
+    /*Serial.print(encAPos);
     Serial.print(" - ");
-    Serial.print(encALastPos);
+    Serial.print(encALastPos);*/
     if (encADiff > 0){
       addEncClick(ENCODER_AR);
     } else if (encADiff < 0){
@@ -113,11 +113,11 @@ int encAMove(){
     }
     encALastPos = encAPos;
     //encAPos = encALastPos = 12000;
-  } else {
+  }/* else {
     Serial.print(encAPos);
     Serial.print(" - ");
     Serial.println(encALastPos);
-  }
+  }*/
 
   return 0;
 }
@@ -214,7 +214,7 @@ void addPush(int button){
   if(deESD[button] > ESD_COUNT){
     if(buttonState[button] == BUTTON_OFF){
       if(HOLD_MAP[button] == BUTTON_INST){
-        Serial.print(button);
+        //Serial.print(button);
         Joystick.setButton(BUTTON_SET[button], HIGH);
         buttonState[button] = BUTTON_PUSHED;
       }

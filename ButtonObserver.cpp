@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtonManager.cpp>
+  Buttoneer <ButtonObserver.cpp>
 
   Copyright (c) 2019, Reid Miller
 
@@ -18,8 +18,8 @@
 */
 
 #include "Arduino.h"
-#include "ButtonManager.h"
+#include "ButtonObserver.h"
 
-ButtonManager::ButtonManager(){
+ButtonObserver::ButtonObserver(){
   _buttonMap = new int[2];
 }

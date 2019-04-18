@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtonManager.h>
+  Buttoneer <ButtonObserver.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,15 +16,15 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef ButtonManager_h
-#define ButtonManager_h
+#ifndef ButtonObserver_h
+#define ButtonObserver_h
 
 #include "Arduino.h"
 
 
-class ButtonManager{
+class ButtonObserver{
   public:
-    ButtonManager();
+    ButtonObserver();
   private:
     int* _buttonMap;
 };

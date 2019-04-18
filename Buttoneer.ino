@@ -21,6 +21,7 @@
 #include <EnableInterrupt.h>
 //#include <digitalWriteFast.h>
 #include "ButtoneerHID.h"
+#include "ButtonManager.h"
 #include "Encoder.h"
 Joystick_ Joystick;
 
@@ -73,7 +74,7 @@ long encPosition = 0;
 #define ENCODER_AR 9
 
 Encoder enc(ENCODER_AR, ENCODER_AL);
-ButtoneerHID hid;
+ButtoneerHID devHID;
 
 void encALHandle(){
   encARVal = digitalRead(ENCODER_AR);
@@ -150,7 +151,6 @@ void setup() {
 }
 
 void loop() {
-
   if(digitalRead(BUTTON_SET[loopState]) == LOW){
     if(HOLD_MAP[loopState] == BUTTON_INST){
       if(buttonState[loopState] == BUTTON_OFF){
@@ -188,13 +188,14 @@ void addShortPush(int button){
   buttonState[button] = BUTTON_PUSHED_SHORT;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(BUTTON_SET[button], HIGH);
+  devHID.addPush(BUTTON_SET[button]);
 }
 
 void addLongPush(int button){
   buttonState[button] = BUTTON_HELD_LONG;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(HOLD_MAP[button], HIGH);
-
+  devHID.addPush(HOLD_MAP[button]);
 }
 void holdManage(int button){
   if(buttonState[loopState] == BUTTON_PUSHED_SHORT || buttonState[loopState] == BUTTON_HELD_LONG){
@@ -219,6 +220,7 @@ void addPush(int button){
       if(HOLD_MAP[button] == BUTTON_INST){
         //Serial.print(button);
         Joystick.setButton(BUTTON_SET[button], HIGH);
+        devHID.addPush(BUTTON_SET[button]);
         buttonState[button] = BUTTON_PUSHED;
       }
     }
@@ -235,18 +237,19 @@ void remPush(int button){
 }
 
 void addEncClick(int button){
-  hid.ping();
-  enc.move();
+  //enc.move();
   if(button == ENCODER_AL){
     encPosition += 1;
     encDir = LEFT;
     Serial.print("L");
     Serial.println(encPosition);
+    devHID.addPush(30);
   } else {
     encDir = RIGHT;
     encPosition -= 1;
     Serial.print("R");
     Serial.println(encPosition);
+    devHID.addPush(31);
   }
 }
 

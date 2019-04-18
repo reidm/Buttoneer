@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtoneerHID.h>
+  Buttoneer <ButtonManager.cpp>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,16 +16,10 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef ButtoneerHID_h
-#define ButtoneerHID_h
 
 #include "Arduino.h"
-//#include <Joystick.h>
+#include "ButtonManager.h"
 
-class ButtoneerHID{
-  public:
-    ButtoneerHID();
-    void addPush(int button);
-};
-
-#endif
+ButtonManager::ButtonManager(){
+  _buttonMap = new int[2];
+}

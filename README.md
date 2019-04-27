@@ -19,17 +19,17 @@ E1B | TX0   RAW |
 E1B | RXI   GND |
     | GND   RST |
     | GND   VCC |
-E1B | 2     A3  |  PB
-E1B | 3     A2  |  PB
-  B | 4     A1  |  PB
-  B | 5     A0  |  PB
-  B | 6     15  | E2B
+E1B | 2     A3  | MPB
+E1B | 3     A2  | MPB
+MB  | 4     A1  | MPB
+MB  | 5     A0  | MPB
+MB  | 6     15  | E2B
 E1B | 7     14  | E2B
 E2B | 8     16  | E2B
 E2B | 9     10  | E2B
     -------------
 ```
-Encoders have paired outputs, connect the pair to the same channel. Channel E1 two encoders,  E2 supports three. 
+Encoders have paired outputs, connect the pair to the same channel. Channel E1 two encoders,  E2 supports three.
 
 Buttons and switches can be connected to any input. Connect one from the button/switch to VCC, and the other to an input.
 

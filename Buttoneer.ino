@@ -21,7 +21,7 @@
 #include <EnableInterrupt.h>
 //#include <digitalWriteFast.h>
 #include "ButtoneerHID.h"
-#include "ButtonManager.h"
+#include "ButtonObserver.h"
 #include "Encoder.h"
 Joystick_ Joystick;
 
@@ -75,6 +75,7 @@ long encPosition = 0;
 
 Encoder enc(ENCODER_AR, ENCODER_AL);
 ButtoneerHID devHID;
+ButtonObserver buttonObs;
 
 void encALHandle(){
   encARVal = digitalRead(ENCODER_AR);
@@ -151,6 +152,7 @@ void setup() {
 }
 
 void loop() {
+  buttonObs.scan();
   if(digitalRead(BUTTON_SET[loopState]) == LOW){
     if(HOLD_MAP[loopState] == BUTTON_INST){
       if(buttonState[loopState] == BUTTON_OFF){

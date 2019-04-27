@@ -21,5 +21,20 @@
 #include "ButtonObserver.h"
 
 ButtonObserver::ButtonObserver(){
-  _buttonMap = new int[2];
+  int _buttonPinMap[] = BUTTON_MAP;
+  for(int i = 0; i < NUM_BUTTONS; i++){
+    pinMode(_buttonPinMap[i], INPUT_PULLUP);
+    //deESD[i] = 0;
+    //buttonState[i] = 0;
+  }
+}
+
+void ButtonObserver::scan(){
+  for(int i = 0; i < NUM_BUTTONS; i++){
+    if(digitalRead(_buttonPinMap[i]) == LOW){
+      Serial.println("Button Press: ");
+      Serial.println(_buttonPinMap[i]);
+    }
+  }
+
 }

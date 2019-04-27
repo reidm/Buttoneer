@@ -21,12 +21,15 @@
 
 #include "Arduino.h"
 
+#define NUM_BUTTONS 2
+#define BUTTON_MAP {0, 1}
 
 class ButtonObserver{
   public:
     ButtonObserver();
+    void scan();
   private:
-    int* _buttonMap;
+    int _buttonPinMap[NUM_BUTTONS];
 };
 
 #endif

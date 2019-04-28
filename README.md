@@ -15,23 +15,21 @@ B - Button/switch
 E1/E2 - Encoder (Channel 1 or 2)
 P - Clutch Bite Point Potentiometer
     -------------
-E1B | TX0   RAW |   
-E1B | RXI   GND |
+E0B | TX0   RAW |   
+E0B | RXI   GND |
     | GND   RST |
     | GND   VCC |
 E1B | 2     A3  | MPB
 E1B | 3     A2  | MPB
 MB  | 4     A1  | MPB
 MB  | 5     A0  | MPB
-MB  | 6     15  | E2B
-E1B | 7     14  | E2B
-E2B | 8     16  | E2B
-E2B | 9     10  | E2B
+MB  | 6     15  | E3B
+  B | 7     14  | E3B
+E2B | 8     16  | E4B
+E2B | 9     10  | E4B
     -------------
 ```
-Encoders have paired outputs, connect the pair to the same channel. Channel E1 two encoders,  E2 supports three.
-
-Buttons and switches can be connected to any input. Connect one from the button/switch to VCC, and the other to an input.
+Buttons and switches can be connected to any input. Connect one from the button/switch to GND, and the other to an input.
 
 Each encoder reduces the button capability by 2. All input pins can also be configured as additional VCC outputs, which also reduces button capacity.
 

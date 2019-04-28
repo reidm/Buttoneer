@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtoneerHID.cpp>
+  Buttoneer <Config.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -17,15 +17,6 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "Arduino.h"
-#include "ButtoneerHID.h"
-//#include <Joystick.h>
-//Joystick_ JoyDev;
 
-ButtoneerHID::ButtoneerHID(){}
-
-
-void ButtoneerHID::addPush(int button){
-  Serial.print("HID Push: ");
-  Serial.println(button);
-}
+//Encoder defineable options
+#define ENCODER_4B 1

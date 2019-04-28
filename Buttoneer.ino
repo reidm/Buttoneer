@@ -17,9 +17,10 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "ButtoneerConfig.h"
+
 #include <Joystick.h>
 #include <EnableInterrupt.h>
-//#include <digitalWriteFast.h>
 #include "ButtoneerHID.h"
 #include "ButtonObserver.h"
 #include "Encoder.h"
@@ -57,6 +58,9 @@ int BUTTON_MATRIX_SET[] = {
   14, 16, 10
 };
 
+
+
+
 int buttonHoldCount[NUM_BUTTONS];
 int buttonState[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
@@ -73,9 +77,13 @@ long encPosition = 0;
 #define ENCODER_AL 8
 #define ENCODER_AR 9
 
-Encoder enc(ENCODER_AR, ENCODER_AL);
+
 ButtoneerHID devHID;
 ButtonObserver buttonObs;
+
+
+EncoderInterrupt encInt[ENCODER_NUM];
+Encoder enc[ENCODER_NUM];
 
 void encALHandle(){
   encARVal = digitalRead(ENCODER_AR);
@@ -149,9 +157,24 @@ void setup() {
   encARPrev = encARVal;
   encALPrev = encALVal;
 
+
+  #ifdef ENCODER_4B
+    delay(2000);
+    Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");
+    encInt[4].pinL = ENCODER_4_L;
+    encInt[4].pinR = ENCODER_4_R;
+    encInt[4].encoderID = 4;
+    enc[4] = encSetID(enc[4], 4);
+    enc[4] = encSetPins(enc[4], encInt[4]);
+    enableInterrupt(ENCODER_4_L, handleEncoderInterrupt4, CHANGE);
+    enableInterrupt(ENCODER_4_R, handleEncoderInterrupt4, CHANGE);
+  #endif
+
+
 }
 
 void loop() {
+  /*
   buttonObs.scan();
   if(digitalRead(BUTTON_SET[loopState]) == LOW){
     if(HOLD_MAP[loopState] == BUTTON_INST){
@@ -183,7 +206,9 @@ void loop() {
   loopState += SAMPLE_PER_LOOP;
   if(loopState >= NUM_BUTTONS)
     loopState = 0;
-
+    */
+  Serial.println("alive");
+  delay(20000);
 }
 
 void addShortPush(int button){
@@ -254,6 +279,18 @@ void addEncClick(int button){
     devHID.addPush(31);
   }
 }
+
+
+
+void handleEncoderInterrupt4(){
+  encHandleInterrupt(enc[4]);
+  Serial.print("Enc4 deets are ");
+  Serial.print(enc[4].pinL);
+  Serial.print(" and ");
+  Serial.println(enc[4].pinR);
+  //enc[4]->handleInterrupt();
+}
+
 
 /*
 void encoderClear(int encoder){

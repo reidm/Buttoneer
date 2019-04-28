@@ -21,24 +21,61 @@
 
 #include "Arduino.h"
 
-class Encoder{
+#define LEFT 0
+#define RIGHT 1
+#define ENCODER_NUM 5
+#define ENCODER_4_L 10
+#define ENCODER_4_R 16
+
+
+struct EncoderInterrupt {
+  int pinL;
+  int pinR;
+  int encoderID;
+};
+
+typedef struct {
+  int encoderID;
+  int pinL;
+  int pinR;
+  bool valL;
+  bool valR;
+  bool prevL;
+  bool prevR;
+  long pos = 12000;
+  bool dir = 0;
+  long lastPos = 12000;
+} Encoder;
+
+Encoder encSetID(Encoder enc, int encoder_id);
+Encoder encSetPins(Encoder enc, EncoderInterrupt encInt);
+void encHandleInterrupt(Encoder enc);
+
+/*
+class Encoder
+{
   public:
-    Encoder(int pinA, int pinB);
-    void move();
-    //void click();
+    Encoder();
+    void setID(int encoder_id);
+    void volatile setPins(int pin_l, int pin_r);
+    void volatile handleInterrupt();
+
+
   private:
-    int _pin;
-    volatile bool encALVal;
-    volatile bool encARVal;
-    volatile bool encALPrev;
-    volatile bool encARPrev;
-    volatile long encAPos;
-    volatile bool encDir;
-    volatile long encALastPos;
-    volatile long encPosition;
+    int _encoderID;
+    int _pinL;
+    int _pinR;
+    bool volatile _encLVal;
+    bool volatile _encRVal;
+    bool volatile _encLPrev;
+    bool volatile _encRPrev;
+    long volatile _encPos = 12000;
+    bool volatile _encDir = 0;
+    long volatile _encLastPos = 12000;
 
 };
 
+*/
 #endif
 
 /*
@@ -46,4 +83,12 @@ volatile long encAPos = 12000;
 volatile bool encDir = 0;
 volatile long encALastPos = 12000;
 long encPosition = 0;
+volatile bool encALVal;
+volatile bool encARVal;
+volatile bool encALPrev;
+volatile bool encARPrev;
+volatile long encAPos;
+volatile bool encDir;
+volatile long encALastPos;
+volatile long encPosition;
 */

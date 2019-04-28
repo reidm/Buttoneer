@@ -34,61 +34,27 @@ struct EncoderInterrupt {
   int encoderID;
 };
 
-typedef struct {
-  int encoderID;
-  int pinL;
-  int pinR;
-  bool valL;
-  bool valR;
-  bool prevL;
-  bool prevR;
-  long pos = 12000;
-  bool dir = 0;
-  long lastPos = 12000;
-} Encoder;
 
-Encoder encSetID(Encoder enc, int encoder_id);
-Encoder encSetPins(Encoder enc, EncoderInterrupt encInt);
-void encHandleInterrupt(Encoder enc);
-
-/*
-class Encoder
+class Encoder2
 {
   public:
-    Encoder();
+    Encoder2();
     void setID(int encoder_id);
-    void volatile setPins(int pin_l, int pin_r);
-    void volatile handleInterrupt();
-
+    void setPins(int pin_l, int pin_r);
+    void handleInterrupt(bool valL, bool valR);
+    int getPosition();
 
   private:
     int _encoderID;
     int _pinL;
     int _pinR;
-    bool volatile _encLVal;
-    bool volatile _encRVal;
-    bool volatile _encLPrev;
-    bool volatile _encRPrev;
-    long volatile _encPos = 12000;
-    bool volatile _encDir = 0;
-    long volatile _encLastPos = 12000;
-
+    bool _valL;
+    bool _valR;
+    int _position;
+    int _lastPosition;
+    bool _prevL;
+    bool _prevR;
+    bool _direction;
 };
 
-*/
 #endif
-
-/*
-volatile long encAPos = 12000;
-volatile bool encDir = 0;
-volatile long encALastPos = 12000;
-long encPosition = 0;
-volatile bool encALVal;
-volatile bool encARVal;
-volatile bool encALPrev;
-volatile bool encARPrev;
-volatile long encAPos;
-volatile bool encDir;
-volatile long encALastPos;
-volatile long encPosition;
-*/

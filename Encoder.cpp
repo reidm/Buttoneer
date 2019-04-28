@@ -20,178 +20,80 @@
 #include "Arduino.h"
 #include "Encoder.h"
 
-Encoder encSetID(Encoder enc, int encoder_id){
-  enc.encoderID = encoder_id;
-  Serial.println(enc.encoderID);
-  return enc;
+Encoder2::Encoder2(){}
+
+void Encoder2::setID(int encoder_id){
+  _encoderID = encoder_id;
+  Serial.println(_encoderID);
+
+  return;
 }
 
-Encoder encSetPins(Encoder enc, EncoderInterrupt encInt){
-  enc.pinL = encInt.pinL;
-  enc.pinR = encInt.pinR;
-  pinMode(enc.pinL, INPUT_PULLUP);
-  pinMode(enc.pinR, INPUT_PULLUP);
+void Encoder2::setPins(int pin_l, int pin_r){
+  _pinL = pin_l;
+  _pinR = pin_r;
+  pinMode(_pinL, INPUT_PULLUP);
+  pinMode(_pinR, INPUT_PULLUP);
   Serial.print("Setting pins ");
-  Serial.print(enc.pinL);
+  Serial.print(_pinL);
   Serial.print(" and ");
-  Serial.println(enc.pinR);
-  enc.valL = digitalRead(enc.pinL);
-  enc.valR = digitalRead(enc.pinR);
-  enc.prevL = enc.valL;
-  enc.prevR = enc.valR;
-  enc.pos = 12000;
-  enc.lastPos = 12000;
-  enc.dir = 0;
-  return enc;
+  Serial.println(_pinR);
+  _valL = digitalRead(_pinL);
+  _valR = digitalRead(_pinR);
+  _prevL = _valL;
+  _prevR = _valR;
+  _position = 12000;
+  _lastPosition = 12000;
+  _direction = 0;
+  return;
 }
 
-void encHandleInterrupt(Encoder enc){
-  Serial.println("Handling Encoder::handleInterrupt");
-  Serial.print("Reading ");
-  Serial.print(enc.pinL);
-  Serial.print(" and ");
-  Serial.println(enc.pinR);
-  enc.valL = digitalRead(enc.pinL);
-  enc.valR = digitalRead(enc.pinR);
-  Serial.print(enc.valL);
-  /*Serial.print(" -- ");*/
-  Serial.println(enc.valR);
-  //Looks like it's working up to here, enable code below
-  /*
+int Encoder2::getPosition(){
+  return _position;
+}
+
+void Encoder2::handleInterrupt(bool valL, bool valR){
+
+  _valL = valL;
+  _valR = valR;
   int ret = 0;
-  if(enc.prevL && enc.prevR){
-    if(!enc.valL && enc.valR) ret = 1;
-    if(enc.valL && !enc.valR) ret = -1;
-  } else if(!enc.prevL && enc.prevR){
-    if(!enc.valL && !enc.valR) ret = 1;
-    if(enc.valL && enc.valR) ret = -1;
-  } else if(!enc.prevL && !enc.prevR){
-    if(enc.valL && !enc.valR) ret = 1;
-    if(!enc.valL && enc.valR) ret = -1;
-  } else if(enc.prevL && !enc.prevR){
-    if(enc.valL && enc.valR) ret = 1;
-    if(!enc.valL && !enc.valR) ret = -1;
+  if(_prevL && _prevR){
+    if(!_valL && _valR) ret = 1;
+    if(_valL && !_valR) ret = -1;
+  } else if(!_prevL && _prevR){
+    if(!_valL && !_valR) ret = 1;
+    if(_valL && _valR) ret = -1;
+  } else if(!_prevL && !_prevR){
+    if(_valL && !_valR) ret = 1;
+    if(!_valL && _valR) ret = -1;
+  } else if(_prevL && !_prevR){
+    if(_valL && _valR) ret = 1;
+    if(!_valL && !_valR) ret = -1;
   }
-  Serial.print(enc.pos);
-  Serial.print(" - ");
-  Serial.println(ret);
-  Serial.print(enc.prevL);
-  Serial.print(" / ");
-  Serial.print(enc.prevR);
-  Serial.print(" / ");
-  Serial.print(enc.valL);
-  Serial.print(" / ");
-  Serial.println(enc.valR);
-
-  enc.pos += ret;
-
-  long encDiff = enc.pos - enc.lastPos;
-  Serial.print("Diff is");
-  Serial.println(encDiff);
+  _position += ret;
+  int encDiff = _position - _lastPosition;
   if(encDiff >= 4 || encDiff <= -4 || encDiff == 0){
-    Serial.print(enc.pos);
+    Serial.print(_position);
     Serial.print(" - ");
-    Serial.print(enc.lastPos);
+    Serial.print(_lastPosition);
     if (encDiff > 0){
       Serial.println("Move Ra");
-      enc.dir = RIGHT;
-      //_encPosition += 1;
-      //addEncClick(ENCODER_AR);
+      _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
-
-      enc.dir = LEFT;
-      //_encPosition -= 1;
-      //addEncClick(ENCODER_AL);
+      _direction = LEFT;
     } else {
-      if(enc.dir = RIGHT){
+      if(_direction = RIGHT){
         Serial.println("Move Rb");
-        //_encDir = RIGHT;
-        //_encPosition += 1;
-        //addEncClick(ENCODER_AR);
-      } else if(enc.dir == LEFT){
+        _direction = RIGHT;
+      } else if(_direction == LEFT){
         Serial.println("Move Lb");
-        //_encDir = LEFT;
-        //_encPosition -= 1;
-        //addEncClick(ENCODER_AL);
+        _direction = LEFT;
        }
     }
-    enc.lastPos = enc.pos;
-    Serial.print(enc.pos);
-    Serial.print(" - ");
-    Serial.print(enc.lastPos);
-    Serial.println('---');
+      _lastPosition = _position;
   }
 
-  enc.prevL = enc.valL;
-  enc.prevR = enc.valR;
-  */
+  _prevL = _valL;
+  _prevR = _valR;
 }
-/*
-
-
-void volatile Encoder::handleInterrupt(){
-  //Serial.println("Handling Encoder::handleInterrupt");
-
-  _encLVal = digitalRead(_pinL);
-  _encRVal = digitalRead(_pinR);
-  int ret = 0;
-  if(_encLPrev && _encRPrev){
-    if(!_encLVal && _encRVal) ret = 1;
-    if(_encLVal && !_encRVal) ret = -1;
-  } else if(!_encLPrev && _encRPrev){
-    if(!_encLVal && !_encRVal) ret = 1;
-    if(_encLVal && _encRVal) ret = -1;
-  } else if(!_encLPrev && !_encRPrev){
-    if(_encLVal && !_encRVal) ret = 1;
-    if(!_encLVal && _encRVal) ret = -1;
-  } else if(_encLPrev && !_encRPrev){
-    if(_encLVal && _encRVal) ret = 1;
-    if(!_encLVal && !_encRVal) ret = -1;
-  }
-  Serial.print(_encPos);
-  Serial.print(" - ");
-  Serial.println(ret);
-  _encPos += ret;
-  long _encDiff = _encPos - _encLastPos;
-  if(_encDiff >= 4 || _encDiff <= -4){ // || _encDiff == 0){
-    Serial.print(_encPos);
-    Serial.print(" - ");
-    Serial.print(_encLastPos);
-    if (_encDiff > 0){
-      Serial.println("Move Ra");
-      _encDir = RIGHT;
-      //_encPosition += 1;
-      //addEncClick(ENCODER_AR);
-    } else if (_encDiff < 0){
-      Serial.println("Move La");
-
-      _encDir = LEFT;
-      //_encPosition -= 1;
-      //addEncClick(ENCODER_AL);
-    } else {
-      if(_encDir = RIGHT){
-        Serial.println("Move Rb");
-        _encDir = RIGHT;
-        //_encPosition += 1;
-        //addEncClick(ENCODER_AR);
-      } else if(_encDir == LEFT){
-        Serial.println("Move Lb");
-        _encDir = LEFT;
-        //_encPosition -= 1;
-        //addEncClick(ENCODER_AL);
-       }
-    }
-    _encLastPos = _encPos;
-    Serial.print(_encPos);
-    Serial.print(" - ");
-    Serial.print(_encLastPos);
-    Serial.println('---');
-  }
-
-  _encLPrev = _encLVal;
-  _encRPrev = _encRVal;
-
-
-}
-*/

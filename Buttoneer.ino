@@ -18,7 +18,7 @@
 */
 
 #include "ButtoneerConfig.h"
-
+//#include <digitalWriteFast.h>
 #include <Joystick.h>
 #include <EnableInterrupt.h>
 #include "ButtoneerHID.h"
@@ -41,8 +41,6 @@ Joystick_ Joystick;
 #define BUTTON_PUSH_THRESH 800
 #define BUTTON_PUSH_LENGTH 450
 
-#define LEFT 0
-#define RIGHT 1
 //List of pins used to provide high signal
 int powerSet[] = {};
 
@@ -83,60 +81,18 @@ ButtonObserver buttonObs;
 
 
 EncoderInterrupt encInt[ENCODER_NUM];
-Encoder enc[ENCODER_NUM];
+//Encoder enc[ENCODER_NUM];
 
-void encALHandle(){
-  encARVal = digitalRead(ENCODER_AR);
-  encALVal = digitalRead(ENCODER_AL);
-  encAMove();
-  encARPrev = encARVal;
-  encALPrev = encALVal;
-}
+Encoder* enc[ENCODER_NUM];
+
+//volatile Encoder2 enc4;
 
 
 
-int encAMove(){
-  int ret = 0;
-  if(encALPrev && encARPrev){
-    if(!encALVal && encARVal) ret = 1;
-    if(encALVal && !encARVal) ret = -1;
-  } else if(!encALPrev && encARPrev){
-    if(!encALVal && !encARVal) ret = 1;
-    if(encALVal && encARVal) ret = -1;
-  } else if(!encALPrev && !encARPrev){
-    if(encALVal && !encARVal) ret = 1;
-    if(!encALVal && encARVal) ret = -1;
-  } else if(encALPrev && !encARPrev){
-    if(encALVal && encARVal) ret = 1;
-    if(!encALVal && !encARVal) ret = -1;
-  }
-  encAPos += ret;
-  long encADiff = encAPos - encALastPos;
-  if(encADiff >= 4 || encADiff <= -4 || encADiff == 0){
-    /*Serial.print(encAPos);
-    Serial.print(" - ");
-    Serial.print(encALastPos);*/
-    if (encADiff > 0){
-      addEncClick(ENCODER_AR);
-    } else if (encADiff < 0){
-      addEncClick(ENCODER_AL);
-    } else {
-      if(encDir = LEFT) addEncClick(ENCODER_AR);
-      else if(encDir == RIGHT) addEncClick(ENCODER_AL);
-    }
-    encALastPos = encAPos;
-  }/* else {
-    Serial.print(encAPos);
-    Serial.print(" - ");
-    Serial.println(encALastPos);
-  }*/
-
-  return 0;
-}
 
 
 void setup() {
-  int i = 0;
+  /*int i = 0;
   for(i = 0; i < NUM_BUTTONS; i++){
     pinMode(BUTTON_SET[i], INPUT_PULLUP);
     deESD[i] = 0;
@@ -145,17 +101,17 @@ void setup() {
   for(i= 0; i < NUM_POWER; i++){
     pinMode(powerSet[i], OUTPUT);
     digitalWrite(powerSet[i], HIGH);
-  }
+  }*/
   Joystick.begin();
-  Serial.begin(115200);
-  pinMode(ENCODER_AL, INPUT_PULLUP);
+  Serial.begin(9600);
+  /*pinMode(ENCODER_AL, INPUT_PULLUP);
   pinMode(ENCODER_AR, INPUT_PULLUP);
   enableInterrupt(ENCODER_AL, encALHandle, CHANGE);
   enableInterrupt(ENCODER_AR, encALHandle, CHANGE);
   encARVal = digitalRead(ENCODER_AR);
   encALVal = digitalRead(ENCODER_AL);
   encARPrev = encARVal;
-  encALPrev = encALVal;
+  encALPrev = encALVal;*/
 
 
   #ifdef ENCODER_4B
@@ -164,10 +120,16 @@ void setup() {
     encInt[4].pinL = ENCODER_4_L;
     encInt[4].pinR = ENCODER_4_R;
     encInt[4].encoderID = 4;
-    enc[4] = encSetID(enc[4], 4);
-    enc[4] = encSetPins(enc[4], encInt[4]);
+    enc[4] = new Encoder();
+    enc[4]->setup(encInt[4]);
+    //enc2[4]->setPins(ENCODER_4_L, ENCODER_4_R);
     enableInterrupt(ENCODER_4_L, handleEncoderInterrupt4, CHANGE);
     enableInterrupt(ENCODER_4_R, handleEncoderInterrupt4, CHANGE);
+
+    /*enc[4] = encSetID(enc[4], 4);
+    enc[4] = encSetPins(enc[4], encInt[4]);
+    enableInterrupt(ENCODER_4_L, handleEncoderInterrupt4, CHANGE);
+    enableInterrupt(ENCODER_4_R, handleEncoderInterrupt4, CHANGE);*/
   #endif
 
 
@@ -208,8 +170,36 @@ void loop() {
     loopState = 0;
     */
   Serial.println("alive");
+  int position = enc[4]->getPosition();
+  Serial.print("Alive check is ");
+  Serial.println(position);
   delay(20000);
 }
+
+
+
+
+void handleEncoderInterrupt4(){
+  //enc[4] = encHandleInterrupt(enc[4]);
+  bool valL = digitalRead(ENCODER_4_L);
+  bool valR = digitalRead(ENCODER_4_R);
+  enc[4]->handleInterrupt(valL, valR);
+
+}
+
+
+
+
+/* old good code goes here
+
+void encALHandle(){
+  encARVal = digitalRead(ENCODER_AR);
+  encALVal = digitalRead(ENCODER_AL);
+  encAMove();
+  encARPrev = encARVal;
+  encALPrev = encALVal;
+}
+
 
 void addShortPush(int button){
   buttonState[button] = BUTTON_PUSHED_SHORT;
@@ -263,6 +253,7 @@ void remPush(int button){
   }
 }
 
+
 void addEncClick(int button){
   //enc.move();
   if(button == ENCODER_AL){
@@ -281,15 +272,43 @@ void addEncClick(int button){
 }
 
 
+int encAMove(){
+  int ret = 0;
+  if(encALPrev && encARPrev){
+    if(!encALVal && encARVal) ret = 1;
+    if(encALVal && !encARVal) ret = -1;
+  } else if(!encALPrev && encARPrev){
+    if(!encALVal && !encARVal) ret = 1;
+    if(encALVal && encARVal) ret = -1;
+  } else if(!encALPrev && !encARPrev){
+    if(encALVal && !encARVal) ret = 1;
+    if(!encALVal && encARVal) ret = -1;
+  } else if(encALPrev && !encARPrev){
+    if(encALVal && encARVal) ret = 1;
+    if(!encALVal && !encARVal) ret = -1;
+  }
+  encAPos += ret;
+  long encADiff = encAPos - encALastPos;
+  if(encADiff >= 4 || encADiff <= -4 || encADiff == 0){
+    //Serial.print(encAPos);
+    //Serial.print(" - ");
+    //Serial.print(encALastPos);
 
-void handleEncoderInterrupt4(){
-  encHandleInterrupt(enc[4]);
-  Serial.print("Enc4 deets are ");
-  Serial.print(enc[4].pinL);
-  Serial.print(" and ");
-  Serial.println(enc[4].pinR);
-  //enc[4]->handleInterrupt();
+    if (encADiff > 0){
+      addEncClick(ENCODER_AR);
+    } else if (encADiff < 0){
+      addEncClick(ENCODER_AL);
+    } else {
+      if(encDir = LEFT) addEncClick(ENCODER_AR);
+      else if(encDir == RIGHT) addEncClick(ENCODER_AL);
+    }
+    encALastPos = encAPos;
+  }
+
+  return 0;
 }
+
+*/
 
 
 /*

@@ -20,18 +20,14 @@
 #include "Arduino.h"
 #include "Encoder.h"
 
-Encoder2::Encoder2(){}
+Encoder::Encoder(){}
 
-void Encoder2::setID(int encoder_id){
-  _encoderID = encoder_id;
+void Encoder::setup(EncoderInterrupt enc_int){
+  _encoderID = enc_int.encoderID;
   Serial.println(_encoderID);
 
-  return;
-}
-
-void Encoder2::setPins(int pin_l, int pin_r){
-  _pinL = pin_l;
-  _pinR = pin_r;
+  _pinL = enc_int.pinR;
+  _pinR = enc_int.pinL;
   pinMode(_pinL, INPUT_PULLUP);
   pinMode(_pinR, INPUT_PULLUP);
   Serial.print("Setting pins ");
@@ -48,11 +44,11 @@ void Encoder2::setPins(int pin_l, int pin_r){
   return;
 }
 
-int Encoder2::getPosition(){
+int Encoder::getPosition(){
   return _position;
 }
 
-void Encoder2::handleInterrupt(bool valL, bool valR){
+void Encoder::handleInterrupt(bool valL, bool valR){
 
   _valL = valL;
   _valR = valR;

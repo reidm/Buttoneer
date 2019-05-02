@@ -35,12 +35,11 @@ struct EncoderInterrupt {
 };
 
 
-class Encoder2
+class Encoder
 {
   public:
-    Encoder2();
-    void setID(int encoder_id);
-    void setPins(int pin_l, int pin_r);
+    Encoder();
+    void setup(EncoderInterrupt enc_int);
     void handleInterrupt(bool valL, bool valR);
     int getPosition();
 

@@ -23,7 +23,10 @@
 #include <EnableInterrupt.h>
 #include "ButtoneerHID.h"
 #include "ButtonObserver.h"
+
+#include "ControllerState.h"
 #include "Encoder.h"
+
 Joystick_ Joystick;
 
 #define NUM_BUTTONS 2
@@ -79,15 +82,13 @@ long encPosition = 0;
 ButtoneerHID devHID;
 ButtonObserver buttonObs;
 
-
+//Things actually being used here
 EncoderInterrupt encInt[ENCODER_NUM];
-//Encoder enc[ENCODER_NUM];
-
 Encoder* enc[ENCODER_NUM];
+ControllerState* controllerState;
 
-//volatile Encoder2 enc4;
 
-
+//Things actually being used ends here
 
 
 
@@ -113,8 +114,9 @@ void setup() {
   encARPrev = encARVal;
   encALPrev = encALVal;*/
 
-
+  int encoder_count = 0;
   #ifdef ENCODER_4B
+    encoder_count++;
     delay(2000);
     Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");
     encInt[4].pinL = ENCODER_4_L;
@@ -122,16 +124,11 @@ void setup() {
     encInt[4].encoderID = 4;
     enc[4] = new Encoder();
     enc[4]->setup(encInt[4]);
-    //enc2[4]->setPins(ENCODER_4_L, ENCODER_4_R);
     enableInterrupt(ENCODER_4_L, handleEncoderInterrupt4, CHANGE);
     enableInterrupt(ENCODER_4_R, handleEncoderInterrupt4, CHANGE);
-
-    /*enc[4] = encSetID(enc[4], 4);
-    enc[4] = encSetPins(enc[4], encInt[4]);
-    enableInterrupt(ENCODER_4_L, handleEncoderInterrupt4, CHANGE);
-    enableInterrupt(ENCODER_4_R, handleEncoderInterrupt4, CHANGE);*/
   #endif
 
+  controllerState = new ControllerState(0, 0, encoder_count);
 
 }
 

@@ -19,7 +19,6 @@
 
 
 //#include <digitalWriteFast.h>
-#include <Joystick.h>
 #include <EnableInterrupt.h>
 
 #include "src/ButtoneerHID.h"
@@ -28,8 +27,6 @@
 #include "src/Encoder.h"
 
 #include "config/ButtoneerConfig.h"
-
-//Joystick_ Joystick;
 
 #define NUM_BUTTONS 2
 #define NUM_POWER 0
@@ -60,8 +57,6 @@ int BUTTON_SET[] = {
 int BUTTON_MATRIX_SET[] = {
   14, 16, 10
 };
-
-
 
 
 int buttonHoldCount[NUM_BUTTONS];

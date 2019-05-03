@@ -19,11 +19,12 @@
 
 #include "Arduino.h"
 #include "ButtoneerHID.h"
-//#include <Joystick.h>
-//Joystick_ JoyDev;
+#include <Joystick.h>
+Joystick_ Joystick;
 
-ButtoneerHID::ButtoneerHID(){}
-
+ButtoneerHID::ButtoneerHID(){
+  _hid = &Joystick;
+}
 
 void ButtoneerHID::addPush(int button){
   Serial.print("HID Push: ");

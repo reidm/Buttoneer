@@ -20,12 +20,14 @@
 #define ButtoneerHID_h
 
 #include "Arduino.h"
-//#include <Joystick.h>
+#include <Joystick.h>
 
 class ButtoneerHID{
   public:
     ButtoneerHID();
     void addPush(int button);
+  private:
+    Joystick_* _hid;
 };
 
 #endif

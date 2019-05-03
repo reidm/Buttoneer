@@ -19,6 +19,7 @@
 
 #include "Arduino.h"
 #include "ControllerState.h"
+#include "ButtoneerHID.h"
 
 ControllerState::ControllerState(){}
 

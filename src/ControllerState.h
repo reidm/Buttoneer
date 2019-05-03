@@ -20,6 +20,7 @@
 #define ControllerState_h
 
 #include "Arduino.h"
+#include "ButtoneerHID.h"
 
 class ControllerState{
   public:
@@ -27,6 +28,7 @@ class ControllerState{
     void addPush(int button);
     void setupEncoders(int numEncoders);
   private:
+    ButtoneerHID hid;
     int _numEncoders;
     int _numInstantButtons;
     int _numMatrixButtons;

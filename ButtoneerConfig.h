@@ -19,4 +19,6 @@
 
 
 //Encoder defineable options
-#define ENCODER_4B 1
+#define ENCODER_4 ON
+#define ENCODER_4_BUTTON_1 30
+#define ENCODER_4_BUTTON_2 31

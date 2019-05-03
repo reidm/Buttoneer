@@ -17,7 +17,7 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "ButtoneerConfig.h"
+
 //#include <digitalWriteFast.h>
 #include <Joystick.h>
 #include <EnableInterrupt.h>
@@ -26,6 +26,8 @@
 
 #include "ControllerState.h"
 #include "Encoder.h"
+
+#include "ButtoneerConfig.h"
 
 Joystick_ Joystick;
 
@@ -67,25 +69,13 @@ int buttonState[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
 int loopState = 0;
 
-volatile bool encALVal;
-volatile bool encARVal;
-volatile bool encALPrev;
-volatile bool encARPrev;
-volatile long encAPos = 12000;
-volatile bool encDir = 0;
-volatile long encALastPos = 12000;
-long encPosition = 0;
-#define ENCODER_AL 8
-#define ENCODER_AR 9
-
-
 ButtoneerHID devHID;
 ButtonObserver buttonObs;
 
 //Things actually being used here
 EncoderInterrupt encInt[ENCODER_NUM];
 Encoder* enc[ENCODER_NUM];
-ControllerState* controllerState;
+ControllerState* cs;
 
 
 //Things actually being used ends here
@@ -103,32 +93,27 @@ void setup() {
     pinMode(powerSet[i], OUTPUT);
     digitalWrite(powerSet[i], HIGH);
   }*/
-  Joystick.begin();
+  //Joystick.begin();
   Serial.begin(9600);
-  /*pinMode(ENCODER_AL, INPUT_PULLUP);
-  pinMode(ENCODER_AR, INPUT_PULLUP);
-  enableInterrupt(ENCODER_AL, encALHandle, CHANGE);
-  enableInterrupt(ENCODER_AR, encALHandle, CHANGE);
-  encARVal = digitalRead(ENCODER_AR);
-  encALVal = digitalRead(ENCODER_AL);
-  encARPrev = encARVal;
-  encALPrev = encALVal;*/
 
-  int encoder_count = 0;
-  #ifdef ENCODER_4B
-    encoder_count++;
+  cs = new ControllerState();
+  cs->setupEncoders(ENCODER_0+ENCODER_1+ENCODER_2+ENCODER_3+ENCODER_4);
+
+  #if(ENCODER_4 == ON)
     delay(2000);
     Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");
-    encInt[4].pinL = ENCODER_4_L;
-    encInt[4].pinR = ENCODER_4_R;
+    encInt[4].pinL = ENCODER_4_PIN_L;
+    encInt[4].pinR = ENCODER_4_PIN_R;
     encInt[4].encoderID = 4;
     enc[4] = new Encoder();
     enc[4]->setup(encInt[4]);
-    enableInterrupt(ENCODER_4_L, handleEncoderInterrupt4, CHANGE);
-    enableInterrupt(ENCODER_4_R, handleEncoderInterrupt4, CHANGE);
+    enableInterrupt(ENCODER_4_PIN_L, handleEncoderInterrupt4, CHANGE);
+    enableInterrupt(ENCODER_4_PIN_R, handleEncoderInterrupt4, CHANGE);
+    enc[4]->addSubscriber(cs);
   #endif
 
-  controllerState = new ControllerState(0, 0, encoder_count);
+
+
 
 }
 
@@ -174,29 +159,16 @@ void loop() {
 }
 
 
-
-
 void handleEncoderInterrupt4(){
-  //enc[4] = encHandleInterrupt(enc[4]);
-  bool valL = digitalRead(ENCODER_4_L);
-  bool valR = digitalRead(ENCODER_4_R);
+  bool valL = digitalRead(ENCODER_4_PIN_L);
+  bool valR = digitalRead(ENCODER_4_PIN_R);
   enc[4]->handleInterrupt(valL, valR);
 
 }
 
 
 
-
 /* old good code goes here
-
-void encALHandle(){
-  encARVal = digitalRead(ENCODER_AR);
-  encALVal = digitalRead(ENCODER_AL);
-  encAMove();
-  encARPrev = encARVal;
-  encALPrev = encALVal;
-}
-
 
 void addShortPush(int button){
   buttonState[button] = BUTTON_PUSHED_SHORT;
@@ -266,43 +238,6 @@ void addEncClick(int button){
     Serial.println(encPosition);
     devHID.addPush(31);
   }
-}
-
-
-int encAMove(){
-  int ret = 0;
-  if(encALPrev && encARPrev){
-    if(!encALVal && encARVal) ret = 1;
-    if(encALVal && !encARVal) ret = -1;
-  } else if(!encALPrev && encARPrev){
-    if(!encALVal && !encARVal) ret = 1;
-    if(encALVal && encARVal) ret = -1;
-  } else if(!encALPrev && !encARPrev){
-    if(encALVal && !encARVal) ret = 1;
-    if(!encALVal && encARVal) ret = -1;
-  } else if(encALPrev && !encARPrev){
-    if(encALVal && encARVal) ret = 1;
-    if(!encALVal && !encARVal) ret = -1;
-  }
-  encAPos += ret;
-  long encADiff = encAPos - encALastPos;
-  if(encADiff >= 4 || encADiff <= -4 || encADiff == 0){
-    //Serial.print(encAPos);
-    //Serial.print(" - ");
-    //Serial.print(encALastPos);
-
-    if (encADiff > 0){
-      addEncClick(ENCODER_AR);
-    } else if (encADiff < 0){
-      addEncClick(ENCODER_AL);
-    } else {
-      if(encDir = LEFT) addEncClick(ENCODER_AR);
-      else if(encDir == RIGHT) addEncClick(ENCODER_AL);
-    }
-    encALastPos = encAPos;
-  }
-
-  return 0;
 }
 
 */

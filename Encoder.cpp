@@ -34,18 +34,30 @@ void Encoder::setup(EncoderInterrupt enc_int){
   Serial.print(_pinL);
   Serial.print(" and ");
   Serial.println(_pinR);
-  _valL = digitalRead(_pinL);
-  _valR = digitalRead(_pinR);
-  _prevL = _valL;
-  _prevR = _valR;
+  _prevL = _valL = digitalRead(_pinL);
+  _prevR = _valR = digitalRead(_pinR);
   _position = 12000;
   _lastPosition = 12000;
   _direction = 0;
+  _subscribedTo = false;
+
   return;
 }
 
 int Encoder::getPosition(){
   return _position;
+}
+
+void Encoder::addSubscriber(ControllerState* cs){
+    _subscriber = cs;
+    _subscribedTo = true;
+
+}
+
+void Encoder::_sendToSubscriber(int button){
+  if(_subscribedTo){
+    _subscriber->addPush(_encoderID);
+  }
 }
 
 void Encoder::handleInterrupt(bool valL, bool valR){
@@ -74,12 +86,14 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(_lastPosition);
     if (encDiff > 0){
       Serial.println("Move Ra");
+      _sendToSubscriber(0);
       _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
+      _sendToSubscriber(1);
       _direction = LEFT;
     } else {
-      if(_direction = RIGHT){
+      if(_direction == RIGHT){
         Serial.println("Move Rb");
         _direction = RIGHT;
       } else if(_direction == LEFT){
@@ -87,7 +101,7 @@ void Encoder::handleInterrupt(bool valL, bool valR){
         _direction = LEFT;
        }
     }
-      _lastPosition = _position;
+    _lastPosition = _position;
   }
 
   _prevL = _valL;

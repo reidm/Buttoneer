@@ -21,16 +21,15 @@
 
 #include "Arduino.h"
 
-class ControllerState
-{
+class ControllerState{
   public:
-    ControllerState(int numInstantButtons, int numMatrixButtons, int numEncoders);
-
+    ControllerState();
+    void addPush(int button);
+    void setupEncoders(int numEncoders);
   private:
     int _numEncoders;
     int _numInstantButtons;
     int _numMatrixButtons;
-    void _setupEncoder();
 
 };
 

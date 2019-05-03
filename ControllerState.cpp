@@ -20,16 +20,19 @@
 #include "Arduino.h"
 #include "ControllerState.h"
 
-ControllerState::ControllerState(int numInstantButtons, int numMatrixButtons, int numEncoders){
-  _numEncoders = numEncoders;
-  _numMatrixButtons = numMatrixButtons;
-  _numInstantButtons = numInstantButtons;
-  if(_numEncoders)
-    _setupEncoder();
-}
+ControllerState::ControllerState(){}
 
-void ControllerState::_setupEncoder(){
+void ControllerState::setupEncoders(int numEncoders){
+  _numEncoders = numEncoders;
   Serial.print("Setting up for thee, these encoders");
   Serial.println(_numEncoders);
+  /*for(int i = 0; i<_numEncoders; i++){
+
+  }*/
   return;
+}
+
+void ControllerState::addPush(int button){
+  Serial.print("Pushing button ");
+  Serial.println(button);
 }

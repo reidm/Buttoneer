@@ -21,15 +21,15 @@
 //#include <digitalWriteFast.h>
 #include <Joystick.h>
 #include <EnableInterrupt.h>
-#include "ButtoneerHID.h"
-#include "ButtonObserver.h"
 
-#include "ControllerState.h"
-#include "Encoder.h"
+#include "src/ButtoneerHID.h"
+#include "src/ButtonObserver.h"
+#include "src/ControllerState.h"
+#include "src/Encoder.h"
 
-#include "ButtoneerConfig.h"
+#include "config/ButtoneerConfig.h"
 
-Joystick_ Joystick;
+//Joystick_ Joystick;
 
 #define NUM_BUTTONS 2
 #define NUM_POWER 0

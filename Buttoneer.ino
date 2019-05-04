@@ -97,10 +97,7 @@ void setup() {
   #if(ENCODER_4 == ON)
     delay(2000);
     Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");
-<<<<<<< HEAD
     encInt[4] = new EncoderInterface();
-=======
->>>>>>> 1d4d12b71a073d31596a418910085cfaf8179a4a
     encInt[4]->pinL = ENCODER_4_PIN_L;
     encInt[4]->pinR = ENCODER_4_PIN_R;
     encInt[4]->buttonL = ENCODER_4_BUTTON_L;

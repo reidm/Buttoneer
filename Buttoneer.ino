@@ -21,10 +21,10 @@
 //#include <digitalWriteFast.h>
 #include <EnableInterrupt.h>
 
-#include "src/ButtoneerHID.h"
-#include "src/ButtonObserver.h"
 #include "src/ControllerState.h"
 #include "src/Encoder.h"
+
+#include "src/IOPoller.h"
 
 #include "config/ButtoneerConfig.h"
 
@@ -64,10 +64,10 @@ int buttonState[NUM_BUTTONS];
 int deESD[NUM_BUTTONS];
 int loopState = 0;
 
-ButtoneerHID devHID;
-ButtonObserver buttonObs;
 
-//Things actually being used here
+
+
+//Things actually being used here:
 EncoderInterrupt encInt[ENCODER_NUM];
 Encoder* enc[ENCODER_NUM];
 ControllerState* cs;

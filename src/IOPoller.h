@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtonObserver.cpp>
+  Buttoneer <IOPoller.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -17,24 +17,14 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef IOPoller_h
+#define IOPoller_h
+
 #include "Arduino.h"
-#include "ButtonObserver.h"
+#include "IOHandler.h"
 
-ButtonObserver::ButtonObserver(){
-  int _buttonPinMap[] = BUTTON_MAP;
-  for(int i = 0; i < NUM_BUTTONS; i++){
-    pinMode(_buttonPinMap[i], INPUT_PULLUP);
-    //deESD[i] = 0;
-    //buttonState[i] = 0;
-  }
-}
+class IOPoller:public IOHandler{
 
-void ButtonObserver::scan(){
-  for(int i = 0; i < NUM_BUTTONS; i++){
-    if(digitalRead(_buttonPinMap[i]) == LOW){
-      Serial.println("Button Press: ");
-      Serial.println(_buttonPinMap[i]);
-    }
-  }
+};
 
-}
+#endif

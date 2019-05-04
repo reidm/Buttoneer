@@ -20,7 +20,9 @@
 #define Encoder_h
 
 #include "Arduino.h"
+#include "IOHandler.h"
 #include "ControllerState.h"
+
 
 #define OFF 0
 #define ON 1
@@ -44,18 +46,14 @@ struct EncoderInterrupt {
 };
 
 
-class Encoder
-{
+class Encoder:public IOHandler{
   public:
     Encoder();
     void setup(EncoderInterrupt enc_int);
     void handleInterrupt(bool valL, bool valR);
     int getPosition();
-    void addSubscriber(ControllerState* cs);
 
   private:
-    void _sendToSubscriber(int button);
-    int _encoderID;
     int _pinL;
     int _pinR;
     bool _valL;
@@ -65,8 +63,6 @@ class Encoder
     bool _prevL;
     bool _prevR;
     bool _direction;
-    bool _subscribedTo;
-    ControllerState* _subscriber;
 
 };
 

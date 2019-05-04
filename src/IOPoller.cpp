@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtonObserver.h>
+  Buttoneer <IOPoller.cpp>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,20 +16,6 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef ButtonObserver_h
-#define ButtonObserver_h
 
 #include "Arduino.h"
-
-#define NUM_BUTTONS 2
-#define BUTTON_MAP {0, 1}
-
-class ButtonObserver{
-  public:
-    ButtonObserver();
-    void scan();
-  private:
-    int _buttonPinMap[NUM_BUTTONS];
-};
-
-#endif
+#include "IOPoller.h"

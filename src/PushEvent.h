@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtoneerHID.cpp>
+  Buttoneer <PushEvent.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,18 +16,19 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
+#ifndef PushEvent_h
+#define PushEvent_h
 
 #include "Arduino.h"
-#include "ButtoneerHID.h"
-#include "PushEvent.h"
-#include <Joystick.h>
-Joystick_ Joystick;
+#include "SensorInterface.h"
 
-ButtoneerHID::ButtoneerHID(){
-  _hid = &Joystick;
-}
+class PushEvent{
+  public:
+    PushEvent();
+    void setSensor(SensorInterface* sensor);
+  private:
+    SensorInterface* _sensor;
 
-void ButtoneerHID::addPush(int button){
-  Serial.print("HID Push: ");
-  Serial.println(button);
-}
+};
+
+#endif

@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ButtoneerHID.cpp>
+  Buttoneer <PushEvent.cpp>
 
   Copyright (c) 2019, Reid Miller
 
@@ -18,16 +18,9 @@
 */
 
 #include "Arduino.h"
-#include "ButtoneerHID.h"
 #include "PushEvent.h"
-#include <Joystick.h>
-Joystick_ Joystick;
 
-ButtoneerHID::ButtoneerHID(){
-  _hid = &Joystick;
-}
 
-void ButtoneerHID::addPush(int button){
-  Serial.print("HID Push: ");
-  Serial.println(button);
+void PushEvent::setSensor(SensorInterface* sensor){
+  _sensor = sensor;
 }

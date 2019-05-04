@@ -1,5 +1,5 @@
 /*
-  Buttoneer <IOHandler.h>
+  Buttoneer <SensorInterfaces.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,23 +16,20 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
-#ifndef IOHandler_h
-#define IOHandler_h
+#ifndef SensorInterfaces_h
+#define SensorInterfaces_h
 
 #include "Arduino.h"
-#include "ControllerState.h"
-#include "SensorInterface.h"
 
-class IOHandler{
+class SensorInterface{};
+class EncoderInterface:public SensorInterface{
   public:
-    void addSubscriber(ControllerState* cs);
-  protected:
-    void _sendPushToSubscriber();
-    int _ioID;
-    bool _subscribedTo;
-    ControllerState* _subscriber;
-    SensorInterface* _sensor;
+    int pinL;
+    int pinR;
+    int encoderID;
+    int buttonL;
+    int buttonR;
 };
+
 
 #endif

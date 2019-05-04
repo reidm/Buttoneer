@@ -19,24 +19,22 @@
 
 #include "Arduino.h"
 #include "Encoder.h"
+#include "SensorInterface.h"
 
 Encoder::Encoder(){}
 
-void Encoder::setup(EncoderInterrupt enc_int){
-  _ioID = enc_int.encoderID;
+void Encoder::setup(EncoderInterface* enc_int){
+  _interface = enc_int;
+  _ioID = enc_int->encoderID;
   Serial.println(_ioID);
-  _buttonL = enc_int.buttonL;
-  _buttonR = enc_int.buttonR;
-  _pinL = enc_int.pinR;
-  _pinR = enc_int.pinL;
-  pinMode(_pinL, INPUT_PULLUP);
-  pinMode(_pinR, INPUT_PULLUP);
+  pinMode(_interface->pinL, INPUT_PULLUP);
+  pinMode(_interface->pinR, INPUT_PULLUP);
   Serial.print("Setting pins ");
-  Serial.print(_pinL);
+  Serial.print(_interface->pinL);
   Serial.print(" and ");
-  Serial.println(_pinR);
-  _prevL = _valL = digitalRead(_pinL);
-  _prevR = _valR = digitalRead(_pinR);
+  Serial.println(_interface->pinR);
+  _prevL = _valL = digitalRead(_interface->pinL);
+  _prevR = _valR = digitalRead(_interface->pinR);
   _position = 12000;
   _lastPosition = 12000;
   _direction = 0;
@@ -82,11 +80,11 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(_lastPosition);
     if (encDiff > 0){
       Serial.println("Move Ra");
-      _sendEncoderPushToSubscriber(_buttonR);
+      _sendEncoderPushToSubscriber(_interface->buttonR);
       _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
-      _sendEncoderPushToSubscriber(_buttonL);
+      _sendEncoderPushToSubscriber(_interface->buttonL);
       _direction = LEFT;
     }
     _lastPosition = _position;

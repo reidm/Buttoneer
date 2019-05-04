@@ -1,5 +1,5 @@
 /*
-  Buttoneer <Config.h>
+  Buttoneer <ButtoneerConfig.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -20,5 +20,5 @@
 
 //Encoder defineable options
 #define ENCODER_4 ON
-#define ENCODER_4_BUTTON_1 30
-#define ENCODER_4_BUTTON_2 31
+#define ENCODER_4_BUTTON_L 30
+#define ENCODER_4_BUTTON_R 31

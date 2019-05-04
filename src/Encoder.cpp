@@ -25,7 +25,8 @@ Encoder::Encoder(){}
 void Encoder::setup(EncoderInterrupt enc_int){
   _ioID = enc_int.encoderID;
   Serial.println(_ioID);
-
+  _buttonL = enc_int.buttonL;
+  _buttonR = enc_int.buttonR;
   _pinL = enc_int.pinR;
   _pinR = enc_int.pinL;
   pinMode(_pinL, INPUT_PULLUP);
@@ -46,6 +47,12 @@ void Encoder::setup(EncoderInterrupt enc_int){
 
 int Encoder::getPosition(){
   return _position;
+}
+
+void Encoder::_sendEncoderPushToSubscriber(int button){
+  if(_subscribedTo){
+    _subscriber->addPush(button);
+  }
 }
 
 
@@ -75,11 +82,11 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(_lastPosition);
     if (encDiff > 0){
       Serial.println("Move Ra");
-      _sendToSubscriber(0);
+      _sendEncoderPushToSubscriber(_buttonR);
       _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
-      _sendToSubscriber(1);
+      _sendEncoderPushToSubscriber(_buttonL);
       _direction = LEFT;
     }
     _lastPosition = _position;

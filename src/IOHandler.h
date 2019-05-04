@@ -27,7 +27,7 @@ class IOHandler{
   public:
     void addSubscriber(ControllerState* cs);
   protected:
-    void _sendToSubscriber(int button);
+    void _sendPushToSubscriber();
     int _ioID;
     bool _subscribedTo;
     ControllerState* _subscriber;

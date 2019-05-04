@@ -25,7 +25,7 @@ void IOHandler::addSubscriber(ControllerState* cs){
     _subscribedTo = true;
 }
 
-void IOHandler::_sendToSubscriber(int button){
+void IOHandler::_sendPushToSubscriber(){
   if(_subscribedTo){
     _subscriber->addPush(_ioID);
   }

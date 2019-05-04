@@ -49,12 +49,6 @@ int Encoder::getPosition(){
   return _position;
 }
 
-void Encoder::_sendEncoderPushToSubscriber(int button){
-  if(_subscribedTo){
-    _subscriber->addPush(button);
-  }
-}
-
 
 void Encoder::handleInterrupt(bool valL, bool valR){
 
@@ -82,11 +76,19 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(_lastPosition);
     if (encDiff > 0){
       Serial.println("Move Ra");
-      _sendEncoderPushToSubscriber(_buttonR);
+      _sendEncoderPushToSubscriber(RIGHT);
       _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
-      _sendEncoderPushToSubscriber(_buttonL);
+      _sendEncoderPushToSubscriber(LEFT);
+      _direction = LEFT;
+    } else if(_direction == LEFT){
+      _sendEncoderPushToSubscriber(RIGHT);
+      delay(2);
+      _direction = RIGHT;
+    } else if(_direction == RIGHT){
+      _sendEncoderPushToSubscriber(LEFT);
+      delay(2);
       _direction = LEFT;
     }
     _lastPosition = _position;
@@ -94,4 +96,15 @@ void Encoder::handleInterrupt(bool valL, bool valR){
 
   _prevL = _valL;
   _prevR = _valR;
+}
+
+
+void Encoder::_sendEncoderPushToSubscriber(int direction){
+  if(_subscribedTo){
+    if(direction == LEFT){
+      _subscriber->addPush(_buttonL);
+    } else {
+      _subscriber->addPush(_buttonR);
+    }
+  }
 }

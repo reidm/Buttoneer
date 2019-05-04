@@ -20,14 +20,14 @@
 #define Encoder_h
 
 #include "Arduino.h"
+#include "SensorInterface.h"
 #include "IOHandler.h"
 #include "ControllerState.h"
 
-
 #define OFF 0
 #define ON 1
-#define LEFT 2
-#define RIGHT 3
+#define LEFT 0
+#define RIGHT 1
 #define ENCODER_NUM 5
 #define ENCODER_0 OFF
 #define ENCODER_1 OFF
@@ -47,7 +47,6 @@ struct EncoderInterrupt {
   int buttonR;
 };
 
-
 class Encoder:public IOHandler{
   public:
     Encoder();
@@ -56,7 +55,8 @@ class Encoder:public IOHandler{
     int getPosition();
 
   private:
-    void _sendEncoderPushToSubscriber(int button);
+    void _sendEncoderPushToSubscriber(int direction);
+    SensorInterface* _interface;
     int _pinL;
     int _pinR;
     int _buttonL;

@@ -47,12 +47,17 @@ class Encoder:public IOHandler{
     int getPosition();
 
   private:
+<<<<<<< HEAD
     void _sendEncoderPushToSubscriber(int direction);
     SensorInterface* _interface;
     int _pinL;
     int _pinR;
     int _buttonL;
     int _buttonR;
+=======
+    void _sendEncoderPushToSubscriber(int button);
+    EncoderInterface* _interface;
+>>>>>>> 1d4d12b71a073d31596a418910085cfaf8179a4a
     bool _valL;
     bool _valR;
     int _position;

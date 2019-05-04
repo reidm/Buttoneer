@@ -20,7 +20,7 @@
 
 //#include <digitalWriteFast.h>
 #include <EnableInterrupt.h>
-
+#include "src/SensorInterface.h"
 #include "src/ControllerState.h"
 #include "src/Encoder.h"
 
@@ -68,7 +68,7 @@ int loopState = 0;
 
 
 //Things actually being used here:
-EncoderInterrupt encInt[ENCODER_NUM];
+EncoderInterface* encInt[ENCODER_NUM];
 Encoder* enc[ENCODER_NUM];
 ControllerState* cs;
 
@@ -97,11 +97,12 @@ void setup() {
   #if(ENCODER_4 == ON)
     delay(2000);
     Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");
-    encInt[4].pinL = ENCODER_4_PIN_L;
-    encInt[4].pinR = ENCODER_4_PIN_R;
-    encInt[4].buttonL = ENCODER_4_BUTTON_L;
-    encInt[4].buttonR = ENCODER_4_BUTTON_R;
-    encInt[4].encoderID = 4;
+    encInt[4] = new EncoderInterface();
+    encInt[4]->pinL = ENCODER_4_PIN_L;
+    encInt[4]->pinR = ENCODER_4_PIN_R;
+    encInt[4]->buttonL = ENCODER_4_BUTTON_L;
+    encInt[4]->buttonR = ENCODER_4_BUTTON_R;
+    encInt[4]->encoderID = 4;
     enc[4] = new Encoder();
     enc[4]->setup(encInt[4]);
     enableInterrupt(ENCODER_4_PIN_L, handleEncoderInterrupt4, CHANGE);

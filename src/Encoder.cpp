@@ -22,13 +22,13 @@
 
 Encoder::Encoder(){}
 
-void Encoder::setup(EncoderInterrupt enc_int){
-  _ioID = enc_int.encoderID;
+void Encoder::setup(EncoderInterface* enc_int){
+  _ioID = enc_int->encoderID;
   Serial.println(_ioID);
-  _buttonL = enc_int.buttonL;
-  _buttonR = enc_int.buttonR;
-  _pinL = enc_int.pinR;
-  _pinR = enc_int.pinL;
+  _buttonL = enc_int->buttonL;
+  _buttonR = enc_int->buttonR;
+  _pinL = enc_int->pinR;
+  _pinR = enc_int->pinL;
   pinMode(_pinL, INPUT_PULLUP);
   pinMode(_pinR, INPUT_PULLUP);
   Serial.print("Setting pins ");

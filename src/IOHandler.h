@@ -22,6 +22,7 @@
 
 #include "Arduino.h"
 #include "ControllerState.h"
+#include "SensorInterface.h"
 
 class IOHandler{
   public:
@@ -31,6 +32,7 @@ class IOHandler{
     int _ioID;
     bool _subscribedTo;
     ControllerState* _subscriber;
+    SensorInterface* _sensor;
 };
 
 #endif

@@ -39,18 +39,10 @@
 #define ENCODER_4_BUTTON_L 30
 #define ENCODER_4_BUTTON_R 31
 
-struct EncoderInterrupt {
-  int pinL;
-  int pinR;
-  int encoderID;
-  int buttonL;
-  int buttonR;
-};
-
 class Encoder:public IOHandler{
   public:
     Encoder();
-    void setup(EncoderInterrupt enc_int);
+    void setup(EncoderInterface* enc_int);
     void handleInterrupt(bool valL, bool valR);
     int getPosition();
 

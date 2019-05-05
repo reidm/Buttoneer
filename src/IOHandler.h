@@ -34,7 +34,7 @@ class IOHandler{
     void _sendPushToSubscriber();
     bool _subscribedTo;
     ControllerState* _subscriber;
-    SensorInterface* _sensor;
+    SensorInterface* _interface;
 };
 
 #endif

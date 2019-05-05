@@ -35,7 +35,7 @@ class Encoder:public IOHandler{
 
   private:
     void _sendEncoderPushToSubscriber();
-    EncoderInterface* _sensor;
+    EncoderInterface* _interface;
     bool _valL;
     bool _valR;
     int _position;

@@ -24,21 +24,21 @@
 Encoder::Encoder(){}
 
 void Encoder::setup(EncoderInterface* enc_int){
-  _sensor = enc_int;
-  _ev->setSensor(_sensor);
-  Serial.println(_sensor->ioID);
-  pinMode(_sensor->pinL, INPUT_PULLUP);
-  pinMode(_sensor->pinR, INPUT_PULLUP);
+  _interface = enc_int;
+  _ev->setSensor(_interface);
+  Serial.println(_interface->ioID);
+  pinMode(_interface->pinL, INPUT_PULLUP);
+  pinMode(_interface->pinR, INPUT_PULLUP);
   Serial.print("Setting pins ");
-  Serial.print(_sensor->pinL);
+  Serial.print(_interface->pinL);
   Serial.print(" and ");
-  Serial.println(_sensor->pinR);
+  Serial.println(_interface->pinR);
   _position = 12000;
   _lastPosition = 12000;
   _direction = 0;
   _subscribedTo = false;
-  _prevL = _valL = digitalRead(_sensor->pinL);
-  _prevR = _valR = digitalRead(_sensor->pinR);
+  _prevL = _valL = digitalRead(_interface->pinL);
+  _prevR = _valR = digitalRead(_interface->pinR);
 
 
   return;
@@ -76,21 +76,21 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     //set _ev to include direction here
     if (encDiff > 0){
       Serial.println("Move Ra");
-      _ev->setButton(_sensor->buttonR);
+      _ev->setButton(_interface->buttonR);
       _sendEncoderPushToSubscriber();
       _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
-      _ev->setButton(_sensor->buttonL);
+      _ev->setButton(_interface->buttonL);
       _sendEncoderPushToSubscriber();
       _direction = LEFT;
     } else if(_direction == LEFT){
-      _ev->setButton(_sensor->buttonL);
+      _ev->setButton(_interface->buttonL);
       _sendEncoderPushToSubscriber();
       delay(2);
       _direction = RIGHT;
     } else if(_direction == RIGHT){
-      _ev->setButton(_sensor->buttonR);
+      _ev->setButton(_interface->buttonR);
       _sendEncoderPushToSubscriber();
       delay(2);
       _direction = LEFT;

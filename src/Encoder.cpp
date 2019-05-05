@@ -73,7 +73,6 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(_position);
     Serial.print(" - ");
     Serial.print(_lastPosition);
-    //set _ev to include direction here
     if (encDiff > 0){
       Serial.println("Move Ra");
       _ev->setButton(_interface->buttonR);
@@ -106,5 +105,6 @@ void Encoder::handleInterrupt(bool valL, bool valR){
 void Encoder::_sendEncoderPushToSubscriber(){
   if(_subscribedTo){
     _subscriber->addPush(_ev);
+    _ev->resetButton();
   }
 }

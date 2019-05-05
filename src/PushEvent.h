@@ -26,6 +26,7 @@ class PushEvent{
   public:
     PushEvent();
     void setSensor(SensorInterface* sensor);
+    void resetButton();
     void setButton(int button);
     int getButton();
     bool checkForButton();

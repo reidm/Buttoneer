@@ -19,8 +19,27 @@
 
 #include "Arduino.h"
 #include "PushEvent.h"
-
+#include "constants/InputStates.h"
+PushEvent::PushEvent(){
+  _sensor = NULL;
+  _button = NO_BUTTON;
+}
 
 void PushEvent::setSensor(SensorInterface* sensor){
   _sensor = sensor;
+}
+
+void PushEvent::setButton(int button){
+  _button = button;
+}
+
+bool PushEvent::checkForButton(){
+  if(_button == NO_BUTTON){
+    return false;
+  }
+  return true;
+}
+
+int PushEvent::getButton(){
+  return _button;
 }

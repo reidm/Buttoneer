@@ -20,6 +20,10 @@
 #include "Arduino.h"
 #include "IOHandler.h"
 
+IOHandler::IOHandler(){
+  _ev = new PushEvent();
+}
+
 void IOHandler::addSubscriber(ControllerState* cs){
     _subscriber = cs;
     _subscribedTo = true;
@@ -27,6 +31,6 @@ void IOHandler::addSubscriber(ControllerState* cs){
 
 void IOHandler::_sendPushToSubscriber(){
   if(_subscribedTo){
-    _subscriber->addPush(_ioID);
+    _subscriber->addPush(_ev);
   }
 }

@@ -20,6 +20,7 @@
 #include "Arduino.h"
 #include "ControllerState.h"
 #include "ButtoneerHID.h"
+#include "constants/InputStates.h"
 
 ControllerState::ControllerState(){}
 
@@ -33,7 +34,9 @@ void ControllerState::setupEncoders(int numEncoders){
   return;
 }
 
-void ControllerState::addPush(int button){
-  Serial.print("Pushing button ");
-  Serial.println(button);
+void ControllerState::addPush(PushEvent* ev){
+  if(ev->checkForButton() != NO_BUTTON){
+    Serial.print("Pushing button ");
+    Serial.println(ev->getButton());
+  }
 }

@@ -1,5 +1,5 @@
 /*
-  Buttoneer <PushEvent.h>
+  Buttoneer <InputStates.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,23 +16,5 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef PushEvent_h
-#define PushEvent_h
 
-#include "Arduino.h"
-#include "SensorInterface.h"
-
-class PushEvent{
-  public:
-    PushEvent();
-    void setSensor(SensorInterface* sensor);
-    void setButton(int button);
-    int getButton();
-    bool checkForButton();
-  private:
-    SensorInterface* _sensor;
-    int _button;
-
-};
-
-#endif
+#define NO_BUTTON -1

@@ -102,7 +102,7 @@ void setup() {
     encInt[4]->pinR = ENCODER_4_PIN_R;
     encInt[4]->buttonL = ENCODER_4_BUTTON_L;
     encInt[4]->buttonR = ENCODER_4_BUTTON_R;
-    encInt[4]->encoderID = 4;
+    encInt[4]->ioID = 4;
     enc[4] = new Encoder();
     enc[4]->setup(encInt[4]);
     enableInterrupt(ENCODER_4_PIN_L, handleEncoderInterrupt4, CHANGE);

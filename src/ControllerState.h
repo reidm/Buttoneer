@@ -21,11 +21,12 @@
 
 #include "Arduino.h"
 #include "ButtoneerHID.h"
+#include "PushEvent.h"
 
 class ControllerState{
   public:
     ControllerState();
-    void addPush(int button);
+    void addPush(PushEvent* ev);
     void setupEncoders(int numEncoders);
   private:
     ButtoneerHID hid;

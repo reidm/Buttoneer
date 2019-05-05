@@ -23,13 +23,15 @@
 #include "Arduino.h"
 #include "ControllerState.h"
 #include "SensorInterface.h"
+#include "PushEvent.h"
 
 class IOHandler{
   public:
+    IOHandler();
     void addSubscriber(ControllerState* cs);
   protected:
+    PushEvent* _ev;
     void _sendPushToSubscriber();
-    int _ioID;
     bool _subscribedTo;
     ControllerState* _subscriber;
     SensorInterface* _sensor;

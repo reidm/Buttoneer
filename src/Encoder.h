@@ -23,21 +23,8 @@
 #include "SensorInterface.h"
 #include "IOHandler.h"
 #include "ControllerState.h"
+#include "constants/EncoderConstants.h"
 
-#define OFF 0
-#define ON 1
-#define LEFT 0
-#define RIGHT 1
-#define ENCODER_NUM 5
-#define ENCODER_0 OFF
-#define ENCODER_1 OFF
-#define ENCODER_2 OFF
-#define ENCODER_3 OFF
-#define ENCODER_4 OFF
-#define ENCODER_4_PIN_L 10
-#define ENCODER_4_PIN_R 16
-#define ENCODER_4_BUTTON_L 30
-#define ENCODER_4_BUTTON_R 31
 
 class Encoder:public IOHandler{
   public:
@@ -47,12 +34,8 @@ class Encoder:public IOHandler{
     int getPosition();
 
   private:
-    void _sendEncoderPushToSubscriber(int direction);
-    EncoderInterface* _interface;
-    int _pinL;
-    int _pinR;
-    int _buttonL;
-    int _buttonR;
+    void _sendEncoderPushToSubscriber();
+    EncoderInterface* _sensor;
     bool _valL;
     bool _valR;
     int _position;

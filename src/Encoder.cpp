@@ -24,24 +24,22 @@
 Encoder::Encoder(){}
 
 void Encoder::setup(EncoderInterface* enc_int){
-  _ioID = enc_int->encoderID;
-  Serial.println(_ioID);
-  _buttonL = enc_int->buttonL;
-  _buttonR = enc_int->buttonR;
-  _pinL = enc_int->pinR;
-  _pinR = enc_int->pinL;
-  pinMode(_pinL, INPUT_PULLUP);
-  pinMode(_pinR, INPUT_PULLUP);
+  _sensor = enc_int;
+  _ev->setSensor(_sensor);
+  Serial.println(_sensor->ioID);
+  pinMode(_sensor->pinL, INPUT_PULLUP);
+  pinMode(_sensor->pinR, INPUT_PULLUP);
   Serial.print("Setting pins ");
-  Serial.print(_interface->pinL);
+  Serial.print(_sensor->pinL);
   Serial.print(" and ");
-  Serial.println(_interface->pinR);
-  _prevL = _valL = digitalRead(_interface->pinL);
-  _prevR = _valR = digitalRead(_interface->pinR);
+  Serial.println(_sensor->pinR);
   _position = 12000;
   _lastPosition = 12000;
   _direction = 0;
   _subscribedTo = false;
+  _prevL = _valL = digitalRead(_sensor->pinL);
+  _prevR = _valR = digitalRead(_sensor->pinR);
+
 
   return;
 }
@@ -75,20 +73,25 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(_position);
     Serial.print(" - ");
     Serial.print(_lastPosition);
+    //set _ev to include direction here
     if (encDiff > 0){
       Serial.println("Move Ra");
-      _sendEncoderPushToSubscriber(RIGHT);
+      _ev->setButton(_sensor->buttonR);
+      _sendEncoderPushToSubscriber();
       _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
-      _sendEncoderPushToSubscriber(LEFT);
+      _ev->setButton(_sensor->buttonL);
+      _sendEncoderPushToSubscriber();
       _direction = LEFT;
     } else if(_direction == LEFT){
-      _sendEncoderPushToSubscriber(RIGHT);
+      _ev->setButton(_sensor->buttonL);
+      _sendEncoderPushToSubscriber();
       delay(2);
       _direction = RIGHT;
     } else if(_direction == RIGHT){
-      _sendEncoderPushToSubscriber(LEFT);
+      _ev->setButton(_sensor->buttonR);
+      _sendEncoderPushToSubscriber();
       delay(2);
       _direction = LEFT;
     }
@@ -100,12 +103,8 @@ void Encoder::handleInterrupt(bool valL, bool valR){
 }
 
 
-void Encoder::_sendEncoderPushToSubscriber(int direction){
+void Encoder::_sendEncoderPushToSubscriber(){
   if(_subscribedTo){
-    if(direction == LEFT){
-      _subscriber->addPush(_buttonL);
-    } else {
-      _subscriber->addPush(_buttonR);
-    }
+    _subscriber->addPush(_ev);
   }
 }

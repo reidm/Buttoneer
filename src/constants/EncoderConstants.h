@@ -1,5 +1,5 @@
 /*
-  Buttoneer <PushEvent.h>
+  Buttoneer <EncoderConstants.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,23 +16,18 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef PushEvent_h
-#define PushEvent_h
 
-#include "Arduino.h"
-#include "SensorInterface.h"
-
-class PushEvent{
-  public:
-    PushEvent();
-    void setSensor(SensorInterface* sensor);
-    void setButton(int button);
-    int getButton();
-    bool checkForButton();
-  private:
-    SensorInterface* _sensor;
-    int _button;
-
-};
-
-#endif
+#define OFF 0
+#define ON 1
+#define LEFT 0
+#define RIGHT 1
+#define ENCODER_NUM 5
+#define ENCODER_0 OFF
+#define ENCODER_1 OFF
+#define ENCODER_2 OFF
+#define ENCODER_3 OFF
+#define ENCODER_4 OFF
+#define ENCODER_4_PIN_L 10
+#define ENCODER_4_PIN_R 16
+#define ENCODER_4_BUTTON_L 30
+#define ENCODER_4_BUTTON_R 31

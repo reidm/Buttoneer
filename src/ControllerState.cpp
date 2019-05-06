@@ -22,7 +22,9 @@
 #include "ButtoneerHID.h"
 #include "constants/InputStates.h"
 
-ControllerState::ControllerState(){}
+ControllerState::ControllerState(){
+  _hid = new ButtoneerHID();
+}
 
 void ControllerState::setupEncoders(int numEncoders){
   _numEncoders = numEncoders;
@@ -36,7 +38,6 @@ void ControllerState::setupEncoders(int numEncoders){
 
 void ControllerState::addPush(PushEvent* ev){
   if(ev->checkForButton() != NO_BUTTON){
-    Serial.print("Pushing button ");
-    Serial.println(ev->getButton());
+    _hid->addPush(ev->getButton());
   }
 }

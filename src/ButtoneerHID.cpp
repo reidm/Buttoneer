@@ -25,9 +25,27 @@ Joystick_ Joystick;
 
 ButtoneerHID::ButtoneerHID(){
   _hid = &Joystick;
+  _hid->begin();
+  for(int i = 0; i<32; i++)
+    _buttonState[i] = BUTTON_OFF;
 }
 
 void ButtoneerHID::addPush(int button){
-  Serial.print("HID Push: ");
-  Serial.println(button);
+  if(!_buttonOn(button)){
+    _buttonState[button] = BUTTON_ON;
+    Serial.print("HID Push: ");
+    Serial.println(button);
+    _hid->setButton(button, HIGH);
+  }
+}
+
+void ButtoneerHID::_removePush(int button){
+  _buttonState[button] = BUTTON_OFF;
+  _hid->setButton(button, LOW);
+}
+
+bool ButtoneerHID::_buttonOn(int button){
+    if(_buttonState[button] == BUTTON_ON)
+      return true;
+    return false;
 }

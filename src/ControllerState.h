@@ -29,7 +29,7 @@ class ControllerState{
     void addPush(PushEvent* ev);
     void setupEncoders(int numEncoders);
   private:
-    ButtoneerHID hid;
+    ButtoneerHID* _hid;
     int _numEncoders;
     int _numInstantButtons;
     int _numMatrixButtons;

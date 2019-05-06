@@ -22,12 +22,19 @@
 #include "Arduino.h"
 #include <Joystick.h>
 
+#define BUTTON_OFF 0
+#define BUTTON_ON 1
+
 class ButtoneerHID{
   public:
     ButtoneerHID();
     void addPush(int button);
+
   private:
+    bool _buttonOn(int button);
+    void _removePush(int button);
     Joystick_* _hid;
+    int _buttonState[32];
 };
 
 #endif

@@ -17,8 +17,5 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 //Encoder defineable options
 #define ENCODER_4 ON
-#define ENCODER_4_BUTTON_L 30
-#define ENCODER_4_BUTTON_R 31

@@ -46,6 +46,13 @@ Pre-requisites
 
 ## Input Configuration
 
+## Encoder Wiring
+Connect B/Clk to the ENCODER_#_PIN_L pin, A/DT to ENCODER_$_PIN_R, and G to ground.
+A/DT
+        SW
+G
+        +
+B/CLK
 
 ## Contributing
 Feature and pull requests are always welcome.

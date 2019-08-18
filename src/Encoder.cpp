@@ -75,21 +75,21 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(_lastPosition);
     if (encDiff > 0){
       Serial.println("Move Ra");
-      _ev->setButton(_interface->buttonR);
+      _ev->setButton(_interface->buttonMapR);
       _sendEncoderPushToSubscriber();
       _direction = RIGHT;
     } else if (encDiff < 0){
       Serial.println("Move La");
-      _ev->setButton(_interface->buttonL);
+      _ev->setButton(_interface->buttonMapL);
       _sendEncoderPushToSubscriber();
       _direction = LEFT;
     } else if(_direction == LEFT){
-      _ev->setButton(_interface->buttonL);
+      _ev->setButton(_interface->buttonMapL);
       _sendEncoderPushToSubscriber();
       delay(2);
       _direction = RIGHT;
     } else if(_direction == RIGHT){
-      _ev->setButton(_interface->buttonR);
+      _ev->setButton(_interface->buttonMapR);
       _sendEncoderPushToSubscriber();
       delay(2);
       _direction = LEFT;

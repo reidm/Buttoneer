@@ -27,8 +27,8 @@ class EncoderInterface:public SensorInterface{
     int pinL;
     int pinR;
     int ioID;
-    int buttonL;
-    int buttonR;
+    int buttonMapL;
+    int buttonMapR;
 };
 
 

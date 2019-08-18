@@ -20,7 +20,6 @@
 #ifndef IOPoller_h
 #define IOPoller_h
 
-#include "Arduino.h"
 #include "IOHandler.h"
 
 class IOPoller:public IOHandler{

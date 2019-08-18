@@ -19,7 +19,6 @@
 #ifndef ButtoneerHID_h
 #define ButtoneerHID_h
 
-#include "Arduino.h"
 #include <Joystick.h>
 
 #define BUTTON_OFF 0

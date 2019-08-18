@@ -20,7 +20,6 @@
 #ifndef IOHandler_h
 #define IOHandler_h
 
-#include "Arduino.h"
 #include "ControllerState.h"
 #include "SensorInterface.h"
 #include "PushEvent.h"

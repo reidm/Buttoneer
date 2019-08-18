@@ -19,8 +19,6 @@
 #ifndef SensorInterfaces_h
 #define SensorInterfaces_h
 
-#include "Arduino.h"
-
 class SensorInterface{};
 class EncoderInterface:public SensorInterface{
   public:

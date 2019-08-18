@@ -19,7 +19,6 @@
 #ifndef ControllerState_h
 #define ControllerState_h
 
-#include "Arduino.h"
 #include "ButtoneerHID.h"
 #include "PushEvent.h"
 

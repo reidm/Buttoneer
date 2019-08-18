@@ -25,8 +25,8 @@ IOHandler::IOHandler(){
 }
 
 void IOHandler::addSubscriber(ControllerState* cs){
-    _subscriber = cs;
-    _subscribedTo = true;
+  _subscriber = cs;
+  _subscribedTo = true;
 }
 
 void IOHandler::_sendPushToSubscriber(){

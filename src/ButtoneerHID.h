@@ -34,7 +34,6 @@ class ButtoneerHID{
     bool _buttonOn(int button);
     void _removePush(int button);
     Joystick_* _hid;
-    int _buttonState[32];
 };
 
 #endif

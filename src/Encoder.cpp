@@ -17,7 +17,6 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "Arduino.h"
 #include "Encoder.h"
 #include "SensorInterface.h"
 
@@ -104,7 +103,7 @@ void Encoder::handleInterrupt(bool valL, bool valR){
 
 void Encoder::_sendEncoderPushToSubscriber(){
   if(_subscribedTo){
+    Serial.println("Encoder is subscribed to, adding push event");
     _subscriber->addPush(_ev);
-    _ev->resetButton();
   }
 }

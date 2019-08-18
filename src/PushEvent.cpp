@@ -22,7 +22,8 @@
 #include "constants/InputStates.h"
 PushEvent::PushEvent(){
   _sensor = NULL;
-  _button = NO_BUTTON;
+  resetButton();
+  setPushTime();
 }
 
 void PushEvent::setSensor(SensorInterface* sensor){
@@ -37,8 +38,21 @@ void PushEvent::setButton(int button){
   _button = button;
 }
 
+void PushEvent::setPushTime(){
+  _pushTime = millis();
+}
+
+unsigned long PushEvent::getPushTime(){
+  return _pushTime;
+}
+
 bool PushEvent::checkForButton(){
   if(_button == NO_BUTTON){
+    return false;
+  }
+  unsigned long now = millis();
+  if (now - _pushTime < RETRIGGER_TIMER){
+    Serial.println("Button press timed out (still active)");
     return false;
   }
   return true;

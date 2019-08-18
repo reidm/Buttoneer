@@ -28,11 +28,14 @@ class PushEvent{
     void setSensor(SensorInterface* sensor);
     void resetButton();
     void setButton(int button);
+    void setPushTime();
+    unsigned long getPushTime();
     int getButton();
     bool checkForButton();
   private:
     SensorInterface* _sensor;
     int _button;
+    unsigned long _pushTime;
 
 };
 

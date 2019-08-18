@@ -19,6 +19,7 @@
 
 
 //#include <digitalWriteFast.h>
+#include "Arduino.h"
 #include <EnableInterrupt.h>
 #include "src/SensorInterface.h"
 #include "src/ControllerState.h"
@@ -42,12 +43,12 @@ ControllerState* cs;
 
 void setup() {
   Serial.begin(9600);
-
+  delay(2500);
+  Serial.println("FRESHBOOT");
   cs = new ControllerState();
   cs->setupEncoders(ENCODER_0+ENCODER_1+ENCODER_2+ENCODER_3+ENCODER_4);
 
   #if(ENCODER_4 == ON)
-    delay(2000);
     Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");
     encInt[4] = new EncoderInterface();
     encInt[4]->pinL = ENCODER_4_PIN_L;

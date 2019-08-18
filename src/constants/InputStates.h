@@ -18,3 +18,4 @@
 */
 
 #define NO_BUTTON -1
+#define RETRIGGER_TIMER 2000

@@ -23,6 +23,9 @@
 #include "ButtoneerHID.h"
 #include "PushEvent.h"
 
+#define HID_ON 1
+#define HID_OFF 0
+
 class ControllerState{
   public:
     ControllerState();
@@ -33,7 +36,7 @@ class ControllerState{
     int _numEncoders;
     int _numInstantButtons;
     int _numMatrixButtons;
-
+    int _buttonStates[32];
 };
 
 #endif

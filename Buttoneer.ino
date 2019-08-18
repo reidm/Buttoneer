@@ -28,43 +28,6 @@
 
 #include "config/ButtoneerConfig.h"
 
-#define NUM_BUTTONS 2
-#define NUM_POWER 0
-#define ESD_COUNT 3
-#define HOLD_DEBOUNCE 50
-#define SAMPLE_PER_LOOP 2
-
-#define BUTTON_INST -1
-#define BUTTON_OFF 0
-#define BUTTON_PUSHED 1
-#define BUTTON_HELD 2
-#define BUTTON_PUSHED_SHORT 3
-#define BUTTON_HELD_LONG 4
-#define BUTTON_PUSH_THRESH 800
-#define BUTTON_PUSH_LENGTH 450
-
-//List of pins used to provide high signal
-int powerSet[] = {};
-
-int HOLD_MAP[] = {
-  BUTTON_INST, BUTTON_INST
-};
-
-int BUTTON_SET[] = {
-  0, 1
-};
-
-int BUTTON_MATRIX_SET[] = {
-  14, 16, 10
-};
-
-
-int buttonHoldCount[NUM_BUTTONS];
-int buttonState[NUM_BUTTONS];
-int deESD[NUM_BUTTONS];
-int loopState = 0;
-
-
 
 
 //Things actually being used here:
@@ -78,17 +41,6 @@ ControllerState* cs;
 
 
 void setup() {
-  /*int i = 0;
-  for(i = 0; i < NUM_BUTTONS; i++){
-    pinMode(BUTTON_SET[i], INPUT_PULLUP);
-    deESD[i] = 0;
-    buttonState[i] = 0;
-  }
-  for(i= 0; i < NUM_POWER; i++){
-    pinMode(powerSet[i], OUTPUT);
-    digitalWrite(powerSet[i], HIGH);
-  }*/
-  //Joystick.begin();
   Serial.begin(9600);
 
   cs = new ControllerState();
@@ -116,39 +68,6 @@ void setup() {
 }
 
 void loop() {
-  /*
-  buttonObs.scan();
-  if(digitalRead(BUTTON_SET[loopState]) == LOW){
-    if(HOLD_MAP[loopState] == BUTTON_INST){
-      if(buttonState[loopState] == BUTTON_OFF){
-        addPush(loopState);
-      }
-    } else {
-      holdManage(loopState);
-    }
-  } else {
-    if(buttonState[loopState] == BUTTON_PUSHED){
-      remPush(loopState);
-    } else if(buttonState[loopState] == BUTTON_HELD){
-      addShortPush(loopState);
-    } else if(buttonState[loopState] == BUTTON_PUSHED_SHORT || buttonState[loopState] == BUTTON_HELD_LONG) {
-      if(buttonHoldCount[loopState] >= 1){
-        buttonHoldCount[loopState] -= 1;
-      }
-
-      if(buttonHoldCount[loopState] == 0){
-        buttonState[loopState] = BUTTON_OFF;
-        Joystick.setButton(BUTTON_SET[loopState], LOW);
-        Joystick.setButton(HOLD_MAP[loopState], LOW);
-      }
-    }
-    deESD[loopState] = 0;
-  }
-
-  loopState += SAMPLE_PER_LOOP;
-  if(loopState >= NUM_BUTTONS)
-    loopState = 0;
-    */
   Serial.println("alive");
   int position = enc[4]->getPosition();
   Serial.print("Alive check is ");
@@ -163,102 +82,3 @@ void handleEncoderInterrupt4(){
   enc[4]->handleInterrupt(valL, valR);
 
 }
-
-
-
-/* old good code goes here
-
-void addShortPush(int button){
-  buttonState[button] = BUTTON_PUSHED_SHORT;
-  buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
-  Joystick.setButton(BUTTON_SET[button], HIGH);
-  devHID.addPush(BUTTON_SET[button]);
-}
-
-void addLongPush(int button){
-  buttonState[button] = BUTTON_HELD_LONG;
-  buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
-  Joystick.setButton(HOLD_MAP[button], HIGH);
-  devHID.addPush(HOLD_MAP[button]);
-}
-void holdManage(int button){
-  if(buttonState[loopState] == BUTTON_PUSHED_SHORT || buttonState[loopState] == BUTTON_HELD_LONG){
-    if(buttonHoldCount[loopState] >= 1){
-      buttonHoldCount[loopState] -= 1;
-    }
-  } else {
-    buttonHoldCount[button] += 1;
-    if(buttonHoldCount[button] > HOLD_DEBOUNCE){
-      buttonState[button] = BUTTON_HELD;
-      if(buttonHoldCount[button] > BUTTON_PUSH_THRESH){
-        addLongPush(button);
-      }
-    }
-  }
-}
-
-void addPush(int button){
-  deESD[button] += 1;
-  if(deESD[button] > ESD_COUNT){
-    if(buttonState[button] == BUTTON_OFF){
-      if(HOLD_MAP[button] == BUTTON_INST){
-        //Serial.print(button);
-        Joystick.setButton(BUTTON_SET[button], HIGH);
-        devHID.addPush(BUTTON_SET[button]);
-        buttonState[button] = BUTTON_PUSHED;
-      }
-    }
-  }
-}
-
-void remPush(int button){
-  if(buttonState[button] > 0){
-    Joystick.setButton(BUTTON_SET[button], LOW);
-    buttonState[button] = BUTTON_OFF;
-    deESD[button] = 0;
-
-  }
-}
-
-
-void addEncClick(int button){
-  //enc.move();
-  if(button == ENCODER_AL){
-    encPosition += 1;
-    encDir = LEFT;
-    Serial.print("L");
-    Serial.println(encPosition);
-    devHID.addPush(30);
-  } else {
-    encDir = RIGHT;
-    encPosition -= 1;
-    Serial.print("R");
-    Serial.println(encPosition);
-    devHID.addPush(31);
-  }
-}
-
-*/
-
-
-/*
-void encoderClear(int encoder){
-  Joystick.setButton(rotaryDestButton[encoderLastDir], LOW);
-  delay(ENCODER_DEBOUNCE);
-  rotaryState[0] = digitalRead(rotarySet[0]);
-  encoderLastDir = 0;
-}
-
-void encoderPush(int encoder, int dir){
-  if( dir > 1 ) {
-    dir = 1;
-  } else if(dir < 0) {
-    dir = 0;
-  }
-  if( encoderLastDir == 0 ) {
-    Joystick.setButton(rotaryDestButton[dir], HIGH);
-    encoderLastDir = dir;
-  } else {
-    encoderLastDir = 0;
-  }
-}*/

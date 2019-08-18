@@ -1,32 +1,34 @@
 # Buttoneer: The Firmware
 
-Buttoneer: The Firmware turns USB compatible Arduino boards into button box controllers. With support for buttons, switches, and rotary encoders.
+Buttoneer: The Firmware turns USB compatible Arduino boards into button box controllers. With support for buttons, switches, potentiometers and rotary encoders.
 
 ## Features
-Buttoneer fetaures button, switch, and encoder support. Buttons feature virtual switching and EMI protection.
+Buttoneer features button, switch, and encoder support. Buttons feature virtual switching and EMI protection.
 
 Supports up to 18 buttons/switches, 5 encoders, and 1 potentiometer.
 
 Potentiometer can be used to set clutch axis amount for user configurable launch control.
-## Pinout
+## Pinout - Arduino Pro Micro
 ```
-Input Support for Arduine Pro Micro
-B - Button/switch
-E1/E2 - Encoder (Channel 1 or 2)
-P - Clutch Bite Point Potentiometer
+Configurable input support:
+ B  - Button/switch
+ M  - Matrix input
+ E# - Encoder (Channel 0-4)
+ P  - Potentiometer
+
     -------------
 E0B | TX0   RAW |   
 E0B | RXI   GND |
     | GND   RST |
     | GND   VCC |
-E1B | 2     A3  | MPB
-E1B | 3     A2  | MPB
-MB  | 4     A1  | MPB
-MB  | 5     A0  | MPB
-MB  | 6     15  | E3B
-  B | 7     14  | E3B
-E2B | 8     16  | E4B
-E2B | 9     10  | E4B
+E1B |  2    A3  | MPB
+E1B |  3    A2  | MPB
+MB  |  4    A1  | MPB
+MB  |  5    A0  | MPB
+MB  |  6    15  | E3B
+  B |  7    14  | E3B
+E2B |  8    16  | E4B
+E2B |  9    10  | E4B
     -------------
 ```
 Buttons and switches can be connected to any input. Connect one from the button/switch to GND, and the other to an input.

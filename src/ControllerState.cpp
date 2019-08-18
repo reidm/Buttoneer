@@ -27,21 +27,14 @@ ControllerState::ControllerState(){
     _buttonStates[i] = HID_OFF;
 }
 
-void ControllerState::setupEncoders(int numEncoders){
+/*void ControllerState::setupEncoders(int numEncoders){
   _numEncoders = numEncoders;
   Serial.print("Setting up for thee, these encoders");
   Serial.println(_numEncoders);
 
-  /*for(int i = 0; i<_numEncoders; i++){
-
-  }*/
-  #if(ENCODER_4 == ENC_ON)
-    delay(2000);
-    Serial.println("ENCODER 4 IS MARKED ON!");
-  #endif
   return;
 
-}
+}*/
 
 void ControllerState::addPush(PushEvent* ev){
   if(ev->checkForButton()){

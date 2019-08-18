@@ -22,10 +22,11 @@
 #include "Arduino.h"
 #include <EnableInterrupt.h>
 #include "src/SensorInterface.h"
-#include "src/ControllerState.h"
 #include "src/Encoder.h"
+#include "src/ControllerState.h"
 
-#include "src/IOPoller.h"
+
+//#include "src/IOPoller.h"
 
 #include "config/ButtoneerConfig.h"
 
@@ -46,7 +47,7 @@ void setup() {
   delay(2500);
   Serial.println("FRESHBOOT");
   cs = new ControllerState();
-  cs->setupEncoders(ENCODER_0+ENCODER_1+ENCODER_2+ENCODER_3+ENCODER_4);
+  //cs->setupEncoders(ENCODER_0+ENCODER_1+ENCODER_2+ENCODER_3+ENCODER_4);
 
   #if(ENCODER_4 == ON)
     Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");

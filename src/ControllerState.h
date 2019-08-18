@@ -22,6 +22,7 @@
 #include "ButtoneerHID.h"
 #include "PushEvent.h"
 
+
 #define HID_ON 1
 #define HID_OFF 0
 
@@ -29,7 +30,8 @@ class ControllerState{
   public:
     ControllerState();
     void addPush(PushEvent* ev);
-    void setupEncoders(int numEncoders);
+    //void addEncoder(Encoder* enc);
+    //void setupEncoders(int numEncoders);
   private:
     ButtoneerHID* _hid;
     int _numEncoders;

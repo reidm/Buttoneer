@@ -29,6 +29,7 @@
 class ControllerState{
   public:
     ControllerState();
+    void handleEVQ();
     void addPush(PushEvent* ev);
     //void addEncoder(Encoder* enc);
     //void setupEncoders(int numEncoders);

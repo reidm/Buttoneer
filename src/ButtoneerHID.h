@@ -28,10 +28,10 @@ class ButtoneerHID{
   public:
     ButtoneerHID();
     void addPush(int button);
-
+    void removePush(int button);
   private:
+
     bool _buttonOn(int button);
-    void _removePush(int button);
     Joystick_* _hid;
 };
 

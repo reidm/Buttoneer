@@ -63,6 +63,7 @@ Feature and pull requests are always welcome.
 [GNU GENERAL PUBLIC LICENSE Version 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 ## Attributions
-* [ArduinoJoystickLibrary](https://github.com/MHeironimus/ArduinoJoystickLibrary) Copyright (c) 2015, Matthew Heironimus
+* [ArduinoJoystickLibrary](https://github.com/MHeironimus/ArduinoJoystickLibrary) by Matthew Heironimus
 * [EnableInterrupt](https://github.com/GreyGnome/EnableInterrupt) By GreyGnome
 * [digitalWriteFast](https://github.com/watterott/Arduino-Libs) of [Mysterious Origins](https://code.google.com/archive/p/digitalwritefast/downloads)
+* [Queue](https://github.com/SMFSW/Queue) by SMFSW

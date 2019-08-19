@@ -35,6 +35,8 @@ void ButtoneerHID::addPush(int button){
   _hid->setButton(button, HIGH);
 }
 
-void ButtoneerHID::_removePush(int button){
+void ButtoneerHID::removePush(int button){
+  Serial.print("Removing push button: ");
+  Serial.println(button);
   _hid->setButton(button, LOW);
 }

@@ -19,5 +19,5 @@
 
 #define NO_BUTTON -1
 
-#define RETRIGGER_TIMER 200
-#define ENCODER_HOLD 5
+#define RETRIGGER_TIMER 25
+#define ENCODER_HOLD 45

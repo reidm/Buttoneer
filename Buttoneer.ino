@@ -34,7 +34,7 @@
 
 //Things actually being used here:
 EncoderInterface* encInt[ENCODER_NUM];
-Encoder* enc[ENCODER_NUM];
+volatile Encoder* enc[ENCODER_NUM];
 ControllerState* cs;
 
 
@@ -70,11 +70,13 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("alive");
+  cs->handleEVQ();
+  //delay(200);
+  /*Serial.println("alive");
   int position = enc[4]->getPosition();
   Serial.print("Alive check is ");
   Serial.println(position);
-  delay(20000);
+  delay(20000);*/
 }
 
 

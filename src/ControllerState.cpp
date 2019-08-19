@@ -17,9 +17,12 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include <cppQueue.h>
 #include "ControllerState.h"
 #include "ButtoneerHID.h"
 #include "constants/InputStates.h"
+
+Queue q(sizeof(PushEvent*), 32, FIFO);
 
 ControllerState::ControllerState(){
   _hid = new ButtoneerHID();
@@ -40,5 +43,26 @@ void ControllerState::addPush(PushEvent* ev){
   if(ev->checkForButton()){
     _hid->addPush(ev->getButton());
     ev->setPushTime();
+    q.push(&ev);
+  }
+}
+
+void ControllerState::handleEVQ(){
+
+  if(!q.isEmpty()){
+    PushEvent *ev;
+    q.pop(&ev);
+    unsigned long diff = millis() - ev->getPushTime();
+    //IF ev is encoder, handle it this way
+    if(diff > ENCODER_HOLD){
+      Serial.println("Removing HID push");
+      _hid->removePush(ev->getButton());
+      Serial.print("It is now diff: ");
+      Serial.println(diff );
+    } else {
+      q.push(&ev);
+    }
+
+
   }
 }

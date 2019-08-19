@@ -83,15 +83,13 @@ void Encoder::handleInterrupt(bool valL, bool valR){
       _sendEncoderPushToSubscriber();
       _direction = LEFT;
     } else if(_direction == LEFT){
+      _ev->setButton(_interface->buttonMapR);
+      _direction = RIGHT;
+      _sendEncoderPushToSubscriber();
+    } else if(_direction == RIGHT){
+      _direction = LEFT;
       _ev->setButton(_interface->buttonMapL);
       _sendEncoderPushToSubscriber();
-      delay(2);
-      _direction = RIGHT;
-    } else if(_direction == RIGHT){
-      _ev->setButton(_interface->buttonMapR);
-      _sendEncoderPushToSubscriber();
-      delay(2);
-      _direction = LEFT;
     }
     _lastPosition = _position;
   }

@@ -23,6 +23,7 @@
 #include "constants/InputStates.h"
 
 Queue q(sizeof(PushEvent*), 32, FIFO);
+PushEvent *this_ev;
 
 ControllerState::ControllerState(){
   _hid = new ButtoneerHID();
@@ -48,23 +49,17 @@ void ControllerState::addPush(PushEvent* ev){
 }
 
 void ControllerState::handleEVQ(){
-
   if(!q.isEmpty()){
-    PushEvent *ev;
-    q.pop(&ev);
-    if(ev->isEncoderEvent()){
-      unsigned long diff = millis() - ev->getPushTime();
-      //IF ev is encoder, handle it this way
+    q.pop(&this_ev);
+    if(this_ev->isEncoderEvent()){
+      unsigned long diff = millis() - this_ev->getPushTime();
       if(diff > ENCODER_HOLD){
-        Serial.println("Removing HID push");
-        _hid->removePush(ev->getButton());
-        Serial.print("It is now diff: ");
-        Serial.println(diff );
+        _hid->removePush(this_ev->getButton());
       } else {
-        q.push(&ev);
+        q.push(&this_ev);
       }
     } else {
-      q.push(&ev);
+      q.push(&this_ev);
     }
   }
 }

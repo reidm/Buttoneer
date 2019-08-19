@@ -57,11 +57,6 @@ bool PushEvent::checkForButton(){
   if(_button == NO_BUTTON){
     return false;
   }
-  unsigned long now = millis();
-  if (now - _pushTime < RETRIGGER_TIMER){
-    Serial.println("Button press timed out (still active)");
-    return false;
-  }
   return true;
 }
 

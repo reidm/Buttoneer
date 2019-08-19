@@ -22,7 +22,7 @@
 #include "ButtoneerHID.h"
 #include "constants/InputStates.h"
 
-Queue q(sizeof(PushEvent*), 32, FIFO);
+volatile Queue q(sizeof(PushEvent*), 32, FIFO);
 PushEvent *this_ev;
 
 ControllerState::ControllerState(){
@@ -41,12 +41,18 @@ ControllerState::ControllerState(){
 }*/
 
 void ControllerState::addPush(PushEvent* ev){
-  if(ev->checkForButton()){
-    _hid->removePush(ev->getLastButton());
-    _hid->addPush(ev->getButton());
-    ev->setPushTime();
-    q.push(&ev);
+  if(ev->isEncoderEvent()){
+    Serial.println("Handling encoder push event");
+    unsigned long now = millis();
+    if (now - ev->getPushTime() >= RETRIGGER_TIMER && ev->checkForButton()){
+      Serial.println("Button press adding");
+      _hid->removePush(ev->getLastButton());
+      _hid->addPush(ev->getButton());
+      ev->setPushTime();
+      q.push(&ev);
+    }
   }
+
 }
 
 void ControllerState::handleEVQ(){

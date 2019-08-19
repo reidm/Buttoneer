@@ -81,8 +81,8 @@ void loop() {
 
 
 void handleEncoderInterrupt4(){
-  bool valL = digitalRead(ENCODER_4_PIN_L);
-  bool valR = digitalRead(ENCODER_4_PIN_R);
-  enc[4]->handleInterrupt(valL, valR);
+  //bool valL = digitalRead(ENCODER_4_PIN_L);
+  //bool valR = digitalRead(ENCODER_4_PIN_R);
+  enc[4]->handleInterrupt2();//valL, valR);
 
 }

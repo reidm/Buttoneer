@@ -47,6 +47,11 @@ int Encoder::getPosition(){
   return _position;
 }
 
+void Encoder::handleInterrupt2(){
+  bool valL = digitalRead(_interface->pinL);
+  bool valR = digitalRead(_interface->pinR);
+  handleInterrupt(valL, valR);
+}
 
 void Encoder::handleInterrupt(bool valL, bool valR){
 
@@ -73,12 +78,12 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     Serial.print(" - ");
     Serial.print(_lastPosition);
     if (encDiff > 0){
-      Serial.println("Move Ra");
+      //Serial.println("Move Ra");
       _ev->setButton(_interface->buttonMapR);
       _sendEncoderPushToSubscriber();
       _direction = RIGHT;
     } else if (encDiff < 0){
-      Serial.println("Move La");
+      //Serial.println("Move La");
       _ev->setButton(_interface->buttonMapL);
       _sendEncoderPushToSubscriber();
       _direction = LEFT;
@@ -101,7 +106,6 @@ void Encoder::handleInterrupt(bool valL, bool valR){
 
 void Encoder::_sendEncoderPushToSubscriber(){
   if(_subscribedTo){
-    Serial.println("Encoder is subscribed to, adding push event");
     _subscriber->addPush(_ev);
   }
 }

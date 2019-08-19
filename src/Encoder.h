@@ -30,6 +30,7 @@ class Encoder:public IOHandler{
     Encoder();
     void setup(EncoderInterface* enc_int);
     void handleInterrupt(bool valL, bool valR);
+    void handleInterrupt2();
     int getPosition();
 
   private:

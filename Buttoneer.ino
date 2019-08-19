@@ -35,7 +35,7 @@
 //Things actually being used here:
 EncoderInterface* encInt[ENCODER_NUM];
 volatile Encoder* enc[ENCODER_NUM];
-ControllerState* cs;
+volatile ControllerState* cs;
 
 
 //Things actually being used ends here

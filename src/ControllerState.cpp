@@ -23,7 +23,7 @@
 #include "constants/InputStates.h"
 
 volatile Queue q(sizeof(PushEvent*), 32, FIFO);
-PushEvent *this_ev;
+volatile PushEvent *this_ev;
 
 ControllerState::ControllerState(){
   _hid = new ButtoneerHID();

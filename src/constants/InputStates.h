@@ -17,7 +17,5 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#define NO_BUTTON -1
-
 #define RETRIGGER_TIMER 75
 #define ENCODER_HOLD 55

@@ -18,7 +18,7 @@
 */
 
 #include "PushEvent.h"
-#include "constants/InputStates.h"
+
 PushEvent::PushEvent(){
   _sensor = NULL;
   resetButton();

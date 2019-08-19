@@ -22,6 +22,8 @@
 #include "Arduino.h"
 #include "SensorInterface.h"
 
+#define NO_BUTTON -1
+
 class PushEvent{
   public:
     PushEvent();

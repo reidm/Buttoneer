@@ -1,5 +1,5 @@
 /*
-  Buttoneer <PushEvent.h>
+  Buttoneer <SensorInterfaces.cpp>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,28 +16,8 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef PushEvent_h
-#define PushEvent_h
-
-#include "Arduino.h"
 #include "SensorInterface.h"
 
-class PushEvent{
-  public:
-    PushEvent();
-    void setSensor(SensorInterface* sensor);
-    void resetButton();
-    void setButton(int button);
-    void setPushTime();
-    unsigned long getPushTime();
-    int getButton();
-    bool checkForButton();
-    bool isEncoderEvent();
-  private:
-    SensorInterface* _sensor;
-    int _button;
-    unsigned long _pushTime;
-
-};
-
-#endif
+EncoderInterface::EncoderInterface(){
+  interfaceType = ENCODER_INTERFACE;
+}

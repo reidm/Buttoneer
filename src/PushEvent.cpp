@@ -25,6 +25,12 @@ PushEvent::PushEvent(){
   setPushTime();
 }
 
+bool PushEvent::isEncoderEvent(){
+  if (_sensor->interfaceType == ENCODER_INTERFACE)
+    return true;
+  return false;
+}
+
 void PushEvent::setSensor(SensorInterface* sensor){
   _sensor = sensor;
 }

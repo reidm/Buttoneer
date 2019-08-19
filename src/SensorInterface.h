@@ -19,9 +19,16 @@
 #ifndef SensorInterfaces_h
 #define SensorInterfaces_h
 
-class SensorInterface{};
+#define ENCODER_INTERFACE 10
+
+class SensorInterface{
+  public:
+    int interfaceType;
+};
+
 class EncoderInterface:public SensorInterface{
   public:
+    EncoderInterface();
     int pinL;
     int pinR;
     int ioID;

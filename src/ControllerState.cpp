@@ -52,17 +52,19 @@ void ControllerState::handleEVQ(){
   if(!q.isEmpty()){
     PushEvent *ev;
     q.pop(&ev);
-    unsigned long diff = millis() - ev->getPushTime();
-    //IF ev is encoder, handle it this way
-    if(diff > ENCODER_HOLD){
-      Serial.println("Removing HID push");
-      _hid->removePush(ev->getButton());
-      Serial.print("It is now diff: ");
-      Serial.println(diff );
+    if(ev->isEncoderEvent()){
+      unsigned long diff = millis() - ev->getPushTime();
+      //IF ev is encoder, handle it this way
+      if(diff > ENCODER_HOLD){
+        Serial.println("Removing HID push");
+        _hid->removePush(ev->getButton());
+        Serial.print("It is now diff: ");
+        Serial.println(diff );
+      } else {
+        q.push(&ev);
+      }
     } else {
       q.push(&ev);
     }
-
-
   }
 }

@@ -42,6 +42,7 @@ ControllerState::ControllerState(){
 
 void ControllerState::addPush(PushEvent* ev){
   if(ev->checkForButton()){
+    _hid->removePush(ev->getLastButton());
     _hid->addPush(ev->getButton());
     ev->setPushTime();
     q.push(&ev);

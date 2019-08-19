@@ -38,7 +38,7 @@ class ControllerState{
     int _numEncoders;
     int _numInstantButtons;
     int _numMatrixButtons;
-    int _buttonStates[32];
+    volatile int _buttonStates[32];
 };
 
 #endif

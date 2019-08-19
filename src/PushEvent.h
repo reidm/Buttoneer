@@ -31,11 +31,13 @@ class PushEvent{
     void setPushTime();
     unsigned long getPushTime();
     int getButton();
+    int getLastButton();
     bool checkForButton();
     bool isEncoderEvent();
   private:
     SensorInterface* _sensor;
     int _button;
+    int _lastButton;
     unsigned long _pushTime;
 
 };

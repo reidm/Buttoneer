@@ -36,10 +36,12 @@ void PushEvent::setSensor(SensorInterface* sensor){
 }
 
 void PushEvent::resetButton(){
+  _lastButton = _button;
   _button = NO_BUTTON;
 }
 
 void PushEvent::setButton(int button){
+  _lastButton = _button;
   _button = button;
 }
 
@@ -65,4 +67,8 @@ bool PushEvent::checkForButton(){
 
 int PushEvent::getButton(){
   return _button;
+}
+
+int PushEvent::getLastButton(){
+  return _lastButton;
 }

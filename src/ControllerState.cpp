@@ -19,7 +19,7 @@
 
 #include <cppQueue.h>
 #include "ControllerState.h"
-#include "ButtoneerHID.h"
+#include "hid/ButtoneerHID.h"
 #include "constants/InputStates.h"
 
 volatile Queue q(sizeof(PushEvent*), 32, FIFO);

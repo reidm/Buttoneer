@@ -21,7 +21,6 @@
 #define IOHandler_h
 
 #include "ControllerState.h"
-#include "SensorInterface.h"
 #include "PushEvent.h"
 
 class IOHandler{

@@ -56,20 +56,12 @@ void setup() {
     enableInterrupt(ENCODER_4_PIN_R, handleEncoderInterrupt4, CHANGE);
     enc[4]->addSubscriber(cs);
   #endif
-
-
-
-
 }
 
 void loop() {
   cs->handleEVQ();
 }
 
-
 void handleEncoderInterrupt4(){
-  //bool valL = digitalRead(ENCODER_4_PIN_L);
-  //bool valR = digitalRead(ENCODER_4_PIN_R);
-  enc[4]->handleInterrupt2();//valL, valR);
-
+  enc[4]->handleInterrupt();
 }

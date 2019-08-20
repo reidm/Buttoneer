@@ -18,7 +18,7 @@
 */
 
 #include "Encoder.h"
-
+#include "Arduino.h"
 
 Encoder::Encoder(){}
 
@@ -47,13 +47,13 @@ int Encoder::getPosition(){
   return _position;
 }
 
-void Encoder::handleInterrupt2(){
+void Encoder::handleInterrupt(){
   bool valL = digitalRead(_interface->pinL);
   bool valR = digitalRead(_interface->pinR);
-  handleInterrupt(valL, valR);
+  _handleInterrupt(valL, valR);
 }
 
-void Encoder::handleInterrupt(bool valL, bool valR){
+void Encoder::_handleInterrupt(bool valL, bool valR){
 
   _valL = valL;
   _valR = valR;
@@ -80,32 +80,25 @@ void Encoder::handleInterrupt(bool valL, bool valR){
     if (encDiff > 0){
       //Serial.println("Move Ra");
       _ev->setButton(_interface->buttonMapR);
-      _sendEncoderPushToSubscriber();
+      _sendPushToSubscriber();
       _direction = RIGHT;
     } else if (encDiff < 0){
       //Serial.println("Move La");
       _ev->setButton(_interface->buttonMapL);
-      _sendEncoderPushToSubscriber();
+      _sendPushToSubscriber();
       _direction = LEFT;
     } else if(_direction == LEFT){
       _ev->setButton(_interface->buttonMapR);
       _direction = RIGHT;
-      _sendEncoderPushToSubscriber();
+      _sendPushToSubscriber();
     } else if(_direction == RIGHT){
       _direction = LEFT;
       _ev->setButton(_interface->buttonMapL);
-      _sendEncoderPushToSubscriber();
+      _sendPushToSubscriber();
     }
     _lastPosition = _position;
   }
 
   _prevL = _valL;
   _prevR = _valR;
-}
-
-
-void Encoder::_sendEncoderPushToSubscriber(){
-  if(_subscribedTo){
-    _subscriber->addPush(_ev);
-  }
 }

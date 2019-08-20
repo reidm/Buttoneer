@@ -27,12 +27,11 @@ class Encoder:public IOHandler{
   public:
     Encoder();
     void setup(EncoderInterface* enc_int);
-    void handleInterrupt(bool valL, bool valR);
-    void handleInterrupt2();
+    void handleInterrupt();
     int getPosition();
 
   private:
-    void _sendEncoderPushToSubscriber();
+    void _handleInterrupt(bool valL, bool valR);
     EncoderInterface* _interface;
     bool _valL;
     bool _valR;

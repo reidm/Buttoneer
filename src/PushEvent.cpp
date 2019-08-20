@@ -17,7 +17,10 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#include "Arduino.h"
+
 #include "PushEvent.h"
+#include "interfaces/SensorInterface.h"
 
 PushEvent::PushEvent(){
   _sensor = NULL;

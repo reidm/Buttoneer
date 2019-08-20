@@ -21,7 +21,7 @@
 //#include <digitalWriteFast.h>
 #include "Arduino.h"
 #include <EnableInterrupt.h>
-#include "src/SensorInterface.h"
+#include "src/interfaces/SensorInterface.h"
 #include "src/Encoder.h"
 #include "src/ControllerState.h"
 
@@ -30,16 +30,9 @@
 
 #include "config/ButtoneerConfig.h"
 
-
-
-//Things actually being used here:
 EncoderInterface* encInt[ENCODER_NUM];
 volatile Encoder* enc[ENCODER_NUM];
 volatile ControllerState* cs;
-
-
-//Things actually being used ends here
-
 
 
 void setup() {
@@ -48,7 +41,7 @@ void setup() {
   Serial.println("FRESHBOOT");
   cs = new ControllerState();
   //cs->setupEncoders(ENCODER_0+ENCODER_1+ENCODER_2+ENCODER_3+ENCODER_4);
-
+  cs->createButtons();
   #if(ENCODER_4 == ON)
     Serial.println("ENCODER_4B SETUP ON PINS 10 & 16");
     encInt[4] = new EncoderInterface();
@@ -71,12 +64,6 @@ void setup() {
 
 void loop() {
   cs->handleEVQ();
-  //delay(200);
-  /*Serial.println("alive");
-  int position = enc[4]->getPosition();
-  Serial.print("Alive check is ");
-  Serial.println(position);
-  delay(20000);*/
 }
 
 

@@ -1,5 +1,5 @@
 /*
-  Buttoneer <Encoder.cpp>
+  Buttoneer <Button.cpp>
 
   Copyright (c) 2019, Reid Miller
 
@@ -17,42 +17,16 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "Encoder.h"
+#include "Button.h"
 
 
-Encoder::Encoder(){}
-
-void Encoder::setup(EncoderInterface* enc_int){
-  _interface = enc_int;
-  _ev->setSensor(_interface);
-  Serial.println(_interface->ioID);
-  pinMode(_interface->pinL, INPUT_PULLUP);
-  pinMode(_interface->pinR, INPUT_PULLUP);
-  Serial.print("Setting pins ");
-  Serial.print(_interface->pinL);
-  Serial.print(" and ");
-  Serial.println(_interface->pinR);
-  _position = 12000;
-  _lastPosition = 12000;
-  _direction = 0;
-  _subscribedTo = false;
-  _prevL = _valL = digitalRead(_interface->pinL);
-  _prevR = _valR = digitalRead(_interface->pinR);
+Button::Button(){}
 
 
-  return;
+void Button::handleInterrupt(){
+
 }
-
-int Encoder::getPosition(){
-  return _position;
-}
-
-void Encoder::handleInterrupt2(){
-  bool valL = digitalRead(_interface->pinL);
-  bool valR = digitalRead(_interface->pinR);
-  handleInterrupt(valL, valR);
-}
-
+/*
 void Encoder::handleInterrupt(bool valL, bool valR){
 
   _valL = valL;
@@ -102,10 +76,4 @@ void Encoder::handleInterrupt(bool valL, bool valR){
   _prevL = _valL;
   _prevR = _valR;
 }
-
-
-void Encoder::_sendEncoderPushToSubscriber(){
-  if(_subscribedTo){
-    _subscriber->addPush(_ev);
-  }
-}
+*/

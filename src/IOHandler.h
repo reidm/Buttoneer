@@ -21,7 +21,10 @@
 #define IOHandler_h
 
 #include "ControllerState.h"
-#include "PushEvent.h"
+#include "interfaces/SensorInterface.h"
+
+class PushEvent;
+
 
 class IOHandler{
   public:

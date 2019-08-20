@@ -18,6 +18,8 @@
 */
 
 #include "IOHandler.h"
+#include "ControllerState.h"
+#include "PushEvent.h"
 
 IOHandler::IOHandler(){
   _ev = new PushEvent();

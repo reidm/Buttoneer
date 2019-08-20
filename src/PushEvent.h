@@ -20,7 +20,7 @@
 #define PushEvent_h
 
 #include "Arduino.h"
-#include "SensorInterface.h"
+#include "interfaces/SensorInterface.h"
 
 #define NO_BUTTON -1
 

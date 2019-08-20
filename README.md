@@ -1,35 +1,36 @@
 # Buttoneer: The Firmware
 
-Buttoneer: The Firmware turns USB compatible Arduino boards into button box controllers. With support for buttons, switches, potentiometers and rotary encoders.
+Buttoneer: The Firmware turns USB compatible Arduino boards into button box controllers. With support for buttons, switches, potentiometers and rotary encoders. Buttons inputs feature EMI protection to prevent inhuman button signals.
 
-## Features
-Buttoneer features button, switch, and encoder support. Buttons feature virtual switching and EMI protection.
+Supports a combination of up to 18 buttons/switches and 5 encoders.
+## Planned
 
-Supports up to 18 buttons/switches, 5 encoders, and 1 potentiometer.
+Potentiometer, used to set clutch axis amount for user configurable launch control.
 
-Potentiometer can be used to set clutch axis amount for user configurable launch control.
+Matrix inputs, increasing the number of buttons without using more input pins.
 ## Pinout - Arduino Pro Micro
 ```
 Configurable input support:
  B  - Button/switch
- M  - Matrix input
  E# - Encoder (Channel 0-4)
- P  - Potentiometer
 
-    -------------
-E0B | TX0   RAW |   
-E0B | RXI   GND |
-    | GND   RST |
-    | GND   VCC |
-E1B |  2    A3  | MPB
-E1B |  3    A2  | MPB
-MB  |  4    A1  | MPB
-MB  |  5    A0  | MPB
-MB  |  6    15  | E3B
-  B |  7    14  | E3B
-E2B |  8    16  | E4B
-E2B |  9    10  | E4B
-    -------------
+Planned support:
+ P  - Potentiometer (analog)
+ B  - Button or matrix input
+     -------------
+E0 B | TX0   RAW |    
+E0 B | RXI   GND |
+     | GND   RST |
+     | GND   VCC |
+E1 B |  2    A3  |    BP
+E1 B |  3    A2  |    BP
+   B |  4    A1  |    BP
+   B |  5    A0  |    BP
+   B |  6    15  | E3 B
+   B |  7    14  | E3 B
+E2 B |  8    16  | E4 B
+E2 B |  9    10  | E4 B
+     -------------
 ```
 Buttons and switches can be connected to any input. Connect one from the button/switch to GND, and the other to an input.
 
@@ -49,12 +50,24 @@ Pre-requisites
 ## Input Configuration
 
 ## Encoder Wiring
-Connect B/Clk to the ENCODER_#_PIN_L pin, A/DT to ENCODER_$_PIN_R, and G to ground.
+Connect B/Clk to the ENCODER_#_PIN_L pin, A/DT to ENCODER_#_PIN_R, and G to ground.
+
+Typical encoder pinouts:
+```
 A/DT
         SW
 G
         +
 B/CLK
+```
+
+```
+B/CLK
+A/DT
+SW
++
+G
+```
 
 ## Contributing
 Feature and pull requests are always welcome.

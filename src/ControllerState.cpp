@@ -21,12 +21,14 @@
 #include "ControllerState.h"
 #include "hid/ButtoneerHID.h"
 #include "constants/InputStates.h"
+#include "sensors/SensorFactory.h""
 
 volatile Queue q(sizeof(PushEvent*), 32, FIFO);
 volatile PushEvent *this_ev;
 
 ControllerState::ControllerState(){
   _hid = new ButtoneerHID();
+  _sensorFactory = new SensorFactory();
   for(int i = 0; i<32; i++)
     _buttonStates[i] = HID_OFF;
 }
@@ -53,6 +55,15 @@ void ControllerState::addPush(PushEvent* ev){
     }
   }
 
+}
+
+void ControllerState::createButtons(){
+  Serial.println("Creating buttons!");
+  //need to replace 5 with number of buttons define in config
+  for (int i = 0; i<5; i++){
+    Serial.print("Checking button: ");
+    Serial.println(i);
+  }
 }
 
 void ControllerState::handleEVQ(){

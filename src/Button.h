@@ -1,5 +1,5 @@
 /*
-  Buttoneer <SensorInterfaces.h>
+  Buttoneer <Button.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,25 +16,22 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef SensorInterfaces_h
-#define SensorInterfaces_h
+#ifndef Button_h
+#define Button_h
 
-#define ENCODER_INTERFACE 10
+#include "IOHandler.h"
 
-class SensorInterface{
+class ButtonInterface;
+
+class Button:public IOHandler{
   public:
-    int interfaceType;
-};
+    Button();
+    //void setup(EncoderInterface* enc_int);
+    void handleInterrupt();
 
-class EncoderInterface:public SensorInterface{
-  public:
-    EncoderInterface();
-    int pinL;
-    int pinR;
-    int ioID;
-    int buttonMapL;
-    int buttonMapR;
-};
+  private:
+    ButtonInterface* _interface;
 
+};
 
 #endif

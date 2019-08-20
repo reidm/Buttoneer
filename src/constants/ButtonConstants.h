@@ -1,5 +1,5 @@
 /*
-  Buttoneer <Encoder.h>
+  Buttoneer <ButtonConstants.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,32 +16,25 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef Encoder_h
-#define Encoder_h
 
-#include "IOHandler.h"
-#include "constants/EncoderConstants.h"
+#define OFF 0
+#define ON 1
 
 
-class Encoder:public IOHandler{
-  public:
-    Encoder();
-    void setup(EncoderInterface* enc_int);
-    void handleInterrupt(bool valL, bool valR);
-    void handleInterrupt2();
-    int getPosition();
+#define BUTTON_NUM 10
+#define BUTTON_0 OFF
+#define BUTTON_1 OFF
+#define BUTTON_2 OFF
+#define BUTTON_3 OFF
+#define BUTTON_4 OFF
+#define BUTTON_5 OFF
+#define BUTTON_6 OFF
+#define BUTTON_7 OFF
+#define BUTTON_8 OFF
+#define BUTTON_9 ON
 
-  private:
-    void _sendEncoderPushToSubscriber();
-    EncoderInterface* _interface;
-    bool _valL;
-    bool _valR;
-    int _position;
-    int _lastPosition;
-    bool _prevL;
-    bool _prevR;
-    bool _direction;
+//Default pin and button mappings
+//Can be over-written by ButtoneerConfig.h
 
-};
-
-#endif
+#define BUTTON_0_PIN 9
+#define BUTTON_0_BUTTON_L 10

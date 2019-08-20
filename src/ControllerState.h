@@ -19,9 +19,11 @@
 #ifndef ControllerState_h
 #define ControllerState_h
 
-#include "hid/ButtoneerHID.h"
 #include "PushEvent.h"
 
+class ButtoneerHID;
+class Button;
+class SensorFactory;
 
 #define HID_ON 1
 #define HID_OFF 0
@@ -33,12 +35,18 @@ class ControllerState{
     void addPush(PushEvent* ev);
     //void addEncoder(Encoder* enc);
     //void setupEncoders(int numEncoders);
+
+    //factory callers
+    void createButtons();
   private:
+    SensorFactory* _sensorFactory;
     ButtoneerHID* _hid;
+    Button* _buttons;
     int _numEncoders;
     int _numInstantButtons;
     int _numMatrixButtons;
     volatile int _buttonStates[32];
+
 };
 
 #endif

@@ -1,5 +1,5 @@
 /*
-  Buttoneer <SensorInterfaces.cpp>
+  Buttoneer <SensorInterface.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,8 +16,32 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#include "SensorInterface.h"
+#ifndef SensorInterface_h
+#define SensorInterface_h
 
-EncoderInterface::EncoderInterface(){
-  interfaceType = ENCODER_INTERFACE;
-}
+#define ENCODER_INTERFACE 10
+#define BUTTON_INTERFACE 11
+
+class SensorInterface{
+  public:
+    int interfaceType;
+    int ioID;
+};
+
+class EncoderInterface:public SensorInterface{
+  public:
+    EncoderInterface();
+    int pinL;
+    int pinR;
+    int buttonMapL;
+    int buttonMapR;
+};
+
+class ButtonInterface:public SensorInterface{
+  public:
+    ButtonInterface();
+    int pin;
+    int buttonMap;
+};
+
+#endif

@@ -1,5 +1,5 @@
 /*
-  Buttoneer <Encoder.h>
+  Buttoneer <SensorInterface.cpp>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,32 +16,12 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef Encoder_h
-#define Encoder_h
+#include "SensorInterface.h"
 
-#include "IOHandler.h"
-#include "constants/EncoderConstants.h"
+EncoderInterface::EncoderInterface(){
+  interfaceType = ENCODER_INTERFACE;
+}
 
-
-class Encoder:public IOHandler{
-  public:
-    Encoder();
-    void setup(EncoderInterface* enc_int);
-    void handleInterrupt(bool valL, bool valR);
-    void handleInterrupt2();
-    int getPosition();
-
-  private:
-    void _sendEncoderPushToSubscriber();
-    EncoderInterface* _interface;
-    bool _valL;
-    bool _valR;
-    int _position;
-    int _lastPosition;
-    bool _prevL;
-    bool _prevR;
-    bool _direction;
-
-};
-
-#endif
+ButtonInterface::ButtonInterface(){
+  interfaceType = BUTTON_INTERFACE;
+}

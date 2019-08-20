@@ -17,5 +17,10 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#ifndef ButtoneerConfig_h
+#define ButtoneerConfig_h
+
 //Encoder defineable options
 #define ENCODER_4 ON
+
+#endif

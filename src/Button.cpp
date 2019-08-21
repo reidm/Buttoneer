@@ -18,14 +18,15 @@
 */
 
 #include "Button.h"
-
+#include "constants/ButtonConstants.h"
 #include "Arduino.h"
 
 Button::Button(){}
 
 void Button::addInterface(ButtonInterface* binterface){
   _interface = binterface;
-  _ev->setSensor(binterface);
+  _ev->setSensor(_interface);
+  _ev->setButton(_interface->buttonMap);
   return;
 }
 
@@ -37,4 +38,7 @@ void Button::handleInterrupt(){
   bool val = digitalRead(_interface->pin);
   Serial.print("Value is: ");
   Serial.println(val);
+  if(digitalRead(_interface->pin) == BUTTON_PUSHED){
+    Serial.println("Handle button push");
+  }
 }

@@ -20,6 +20,9 @@
 #define OFF 0
 #define ON 1
 
+#define BUTTON_PUSHED 0
+#define BUTTON_OPEN 1
+
 
 #define HW_MAX_NUM_BUTTONS 10
 #define BUTTON_ENABLED_0 ON

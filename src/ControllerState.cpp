@@ -64,6 +64,9 @@ void ControllerState::createButtons(){
 
   int numButtons = _sensorFactory->getNumButtons();
   _buttons = _sensorFactory->getButtons(); //just one for now..
+  for(int i = 0; i<=numButtons; i++){
+    _buttons[i]->addSubscriber(this);
+  }
 
 }
 
@@ -84,7 +87,5 @@ void ControllerState::handleEVQ(){
 }
 
 void ControllerState::passButtonInterrupt(int ioID){
-  Serial.println("PING!!");
-  Serial.println(ioID);
   _buttons[ioID]->handleInterrupt(); // _buttons[ioID]
 }

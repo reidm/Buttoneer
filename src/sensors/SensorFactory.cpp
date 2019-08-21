@@ -38,24 +38,39 @@ int SensorFactory::getNumButtons(){
 }
 
 #include "Arduino.h"
-Button* SensorFactory::getButtons(){
-  Button* b;
+Button** SensorFactory::getButtons(){
+  Button** buttons;
+  buttons = malloc(sizeof(buttons)* HW_MAX_NUM_BUTTONS);
   ButtonInterface* bi;
   #if(BUTTON_ENABLED_0 == ON)
     Serial.println("Binding button 0");
-    b = new Button();
+    buttons[_buttonIterator] = new Button();
     bi = new ButtonInterface();
     bi->pin = BUTTON_PIN_0;
     bi->buttonMap = BUTTON_MAP_0;
     pinMode(BUTTON_PIN_0, INPUT_PULLUP);
     enableInterrupt(BUTTON_PIN_0, interruptButton0, CHANGE);
-    b->addInterface(bi);
-    b->setID(_interfaceIDIterator);
+    buttons[_buttonIterator]->addInterface(bi);
+    buttons[_buttonIterator]->setID(_interfaceIDIterator);
     //b->addSubscriber(cs);
   #endif
   _interfaceIDIterator++;
   _buttonIterator++;
-  return b;
+  #if(BUTTON_ENABLED_0 == ON)
+    Serial.println("Binding button 0");
+    buttons[_buttonIterator] = new Button();
+    bi = new ButtonInterface();
+    bi->pin = BUTTON_PIN_1;
+    bi->buttonMap = BUTTON_MAP_1;
+    pinMode(BUTTON_PIN_1, INPUT_PULLUP);
+    enableInterrupt(BUTTON_PIN_1, interruptButton1, CHANGE);
+    buttons[_buttonIterator]->addInterface(bi);
+    buttons[_buttonIterator]->setID(_interfaceIDIterator);
+    //b->addSubscriber(cs);
+  #endif
+  _interfaceIDIterator++;
+  _buttonIterator++;
+  return buttons;
 }
 
 

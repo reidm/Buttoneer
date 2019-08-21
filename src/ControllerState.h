@@ -43,7 +43,7 @@ class ControllerState{
   private:
     SensorFactory* _sensorFactory;
     ButtoneerHID* _hid;
-    Button* _buttons;
+    Button** _buttons;
     int _numEncoders;
     int _numButtons;
     volatile int _buttonStates[32];

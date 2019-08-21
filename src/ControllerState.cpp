@@ -86,5 +86,5 @@ void ControllerState::handleEVQ(){
 void ControllerState::passButtonInterrupt(int ioID){
   Serial.println("PING!!");
   Serial.println(ioID);
-  _buttons->handleInterrupt(); // _buttons[ioID]
+  _buttons[ioID]->handleInterrupt(); // _buttons[ioID]
 }

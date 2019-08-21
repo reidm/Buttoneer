@@ -20,3 +20,4 @@
 
 
 void interruptButton0();
+void interruptButton1();

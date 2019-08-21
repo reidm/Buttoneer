@@ -25,7 +25,7 @@ class Button;
 class SensorFactory{
   public:
     SensorFactory();
-    Button* getButtons();
+    Button** getButtons();
     int getNumButtons();
   private:
     void _countButtons();

@@ -38,14 +38,15 @@ class ControllerState{
 
     //factory callers
     void createButtons();
+    void ping();
   private:
     SensorFactory* _sensorFactory;
     ButtoneerHID* _hid;
     Button* _buttons;
     int _numEncoders;
-    int _numInstantButtons;
-    int _numMatrixButtons;
+    int _numButtons;
     volatile int _buttonStates[32];
+
 
 };
 

@@ -21,20 +21,20 @@
 #define ON 1
 
 
-#define BUTTON_NUM 10
-#define BUTTON_0 OFF
-#define BUTTON_1 OFF
-#define BUTTON_2 OFF
-#define BUTTON_3 OFF
-#define BUTTON_4 OFF
-#define BUTTON_5 OFF
-#define BUTTON_6 OFF
-#define BUTTON_7 OFF
-#define BUTTON_8 OFF
-#define BUTTON_9 ON
+#define HW_MAX_NUM_BUTTONS 10
+#define BUTTON_ENABLED_0 ON
+#define BUTTON_ENABLED_1 OFF
+#define BUTTON_ENABLED_2 OFF
+#define BUTTON_ENABLED_3 OFF
+#define BUTTON_ENABLED_4 OFF
+#define BUTTON_ENABLED_5 OFF
+#define BUTTON_ENABLED_6 OFF
+#define BUTTON_ENABLED_7 OFF
+#define BUTTON_ENABLED_8 OFF
+#define BUTTON_ENABLED_9 OFF
 
 //Default pin and button mappings
 //Can be over-written by ButtoneerConfig.h
 
-#define BUTTON_0_PIN 9
-#define BUTTON_0_BUTTON_L 10
+#define BUTTON_PIN_0 9
+#define BUTTON_MAP_0 10

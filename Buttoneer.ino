@@ -20,11 +20,11 @@
 
 //#include <digitalWriteFast.h>
 #include "Arduino.h"
-#include <EnableInterrupt.h>
+//#include <EnableInterrupt.h>
 #include "src/interfaces/SensorInterface.h"
 #include "src/Encoder.h"
 #include "src/ControllerState.h"
-
+#include "Buttoneer.h"
 
 //#include "src/IOPoller.h"
 
@@ -52,8 +52,8 @@ void setup() {
     encInt[4]->ioID = 4;
     enc[4] = new Encoder();
     enc[4]->setup(encInt[4]);
-    enableInterrupt(ENCODER_4_PIN_L, handleEncoderInterrupt4, CHANGE);
-    enableInterrupt(ENCODER_4_PIN_R, handleEncoderInterrupt4, CHANGE);
+    //enableInterrupt(ENCODER_4_PIN_L, handleEncoderInterrupt4, CHANGE);
+    //enableInterrupt(ENCODER_4_PIN_R, handleEncoderInterrupt4, CHANGE);
     enc[4]->addSubscriber(cs);
   #endif
 }
@@ -64,4 +64,9 @@ void loop() {
 
 void handleEncoderInterrupt4(){
   enc[4]->handleInterrupt();
+}
+
+void interruptButton0(){
+  Serial.println("Globar handle button 0");
+  cs->ping();
 }

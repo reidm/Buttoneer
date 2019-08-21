@@ -23,6 +23,8 @@
 #include "constants/InputStates.h"
 #include "sensors/SensorFactory.h""
 
+#include "Button.h"
+
 volatile Queue q(sizeof(PushEvent*), 32, FIFO);
 volatile PushEvent *this_ev;
 
@@ -59,11 +61,15 @@ void ControllerState::addPush(PushEvent* ev){
 
 void ControllerState::createButtons(){
   Serial.println("Creating buttons!");
-  //need to replace 5 with number of buttons define in config
-  for (int i = 0; i<5; i++){
-    Serial.print("Checking button: ");
-    Serial.println(i);
+
+  int numButtons = _sensorFactory->getNumButtons();
+  for (int i = 0; i<numButtons; i++){
+    _sensorFactory->getNextButton();
   }
+
+  /*do{
+      _buttons + sizeof(_buttons) * _numButtons = _sensorFactory->getNextButton();
+  } while (_buttons[_numButtons++] != NULL);*/
 }
 
 void ControllerState::handleEVQ(){
@@ -80,4 +86,8 @@ void ControllerState::handleEVQ(){
       q.push(&this_ev);
     }
   }
+}
+
+void ControllerState::ping(){
+  Serial.println("PING!!");
 }

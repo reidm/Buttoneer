@@ -1,5 +1,5 @@
 /*
-  Buttoneer <ControllerState.h>
+  Buttoneer <Buttoneer.h>
 
   Copyright (c) 2019, Reid Miller
 
@@ -16,29 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-#ifndef ControllerState_h
-#define ControllerState_h
-
-#include "hid/ButtoneerHID.h"
-#include "PushEvent.h"
 
 
-#define HID_ON 1
-#define HID_OFF 0
 
-class ControllerState{
-  public:
-    ControllerState();
-    void handleEVQ();
-    void addPush(PushEvent* ev);
-    //void addEncoder(Encoder* enc);
-    //void setupEncoders(int numEncoders);
-  private:
-    ButtoneerHID* _hid;
-    int _numEncoders;
-    int _numInstantButtons;
-    int _numMatrixButtons;
-    volatile int _buttonStates[32];
-};
-
-#endif
+void interruptButton0();

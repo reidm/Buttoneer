@@ -26,9 +26,13 @@ class SensorFactory{
   public:
     SensorFactory();
     Button* getNextButton();
+    int getNumButtons();
   private:
+    void _countButtons();
     int _interfaceIDCount;
     int _buttonCount;
+    int _buttonIterator;
+    void _interruptButton0();
 };
 
 #endif

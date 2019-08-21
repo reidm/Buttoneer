@@ -17,10 +17,55 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include "SensorFactory.h"
+
+#include "../Button.h"
+
 #include "../constants/ButtonConstants.h"
 #include "../../config/ButtoneerConfig.h"
+
+#include <EnableInterrupt.h>
+#include "../../Buttoneer.h"
 
 SensorFactory::SensorFactory(){
   _interfaceIDCount = 0;
   _buttonCount = 0;
+  _buttonIterator = 0;
+  _countButtons();
+}
+
+int SensorFactory::getNumButtons(){
+  return _buttonCount;
+}
+
+#include "Arduino.h"
+Button* SensorFactory::getNextButton(){
+  Button* b;
+  #if(BUTTON_ENABLED_0 == ON)
+    Serial.println("Binding button 0");
+    b = new Button();
+    pinMode(BUTTON_PIN_0, INPUT_PULLUP);
+    enableInterrupt(BUTTON_PIN_0, interruptButton0, CHANGE);
+  #endif
+  Serial.print("Returning button:");
+  Serial.println(_buttonIterator++);
+  return NULL;
+}
+
+void SensorFactory::_interruptButton0(){
+  Serial.println("Button 0 Interrupt!!!");
+}
+
+
+
+void SensorFactory::_countButtons(){
+  _buttonCount = BUTTON_ENABLED_0 +
+    BUTTON_ENABLED_1 +
+    BUTTON_ENABLED_2 +
+    BUTTON_ENABLED_3 +
+    BUTTON_ENABLED_4 +
+    BUTTON_ENABLED_5 +
+    BUTTON_ENABLED_6 +
+    BUTTON_ENABLED_7 +
+    BUTTON_ENABLED_8 +
+    BUTTON_ENABLED_9;
 }

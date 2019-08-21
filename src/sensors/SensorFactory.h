@@ -32,7 +32,6 @@ class SensorFactory{
     int _interfaceIDCount;
     int _buttonCount;
     int _buttonIterator;
-    void _interruptButton0();
 };
 
 #endif

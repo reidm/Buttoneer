@@ -51,11 +51,6 @@ Button* SensorFactory::getNextButton(){
   return NULL;
 }
 
-void SensorFactory::_interruptButton0(){
-  Serial.println("Button 0 Interrupt!!!");
-}
-
-
 
 void SensorFactory::_countButtons(){
   _buttonCount = BUTTON_ENABLED_0 +

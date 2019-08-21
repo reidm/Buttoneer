@@ -27,7 +27,7 @@
 #include "../../Buttoneer.h"
 
 SensorFactory::SensorFactory(){
-  _interfaceIDCount = 0;
+  _interfaceIDIterator = 0;
   _buttonCount = 0;
   _buttonIterator = 0;
   _countButtons();
@@ -38,17 +38,24 @@ int SensorFactory::getNumButtons(){
 }
 
 #include "Arduino.h"
-Button* SensorFactory::getNextButton(){
+Button* SensorFactory::getButtons(){
   Button* b;
+  ButtonInterface* bi;
   #if(BUTTON_ENABLED_0 == ON)
     Serial.println("Binding button 0");
     b = new Button();
+    bi = new ButtonInterface();
+    bi->pin = BUTTON_PIN_0;
+    bi->buttonMap = BUTTON_MAP_0;
     pinMode(BUTTON_PIN_0, INPUT_PULLUP);
     enableInterrupt(BUTTON_PIN_0, interruptButton0, CHANGE);
+    b->addInterface(bi);
+    b->setID(_interfaceIDIterator);
+    //b->addSubscriber(cs);
   #endif
-  Serial.print("Returning button:");
-  Serial.println(_buttonIterator++);
-  return NULL;
+  _interfaceIDIterator++;
+  _buttonIterator++;
+  return b;
 }
 
 

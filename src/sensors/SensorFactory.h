@@ -25,11 +25,11 @@ class Button;
 class SensorFactory{
   public:
     SensorFactory();
-    Button* getNextButton();
+    Button* getButtons();
     int getNumButtons();
   private:
     void _countButtons();
-    int _interfaceIDCount;
+    int _interfaceIDIterator;
     int _buttonCount;
     int _buttonIterator;
 };

@@ -25,7 +25,6 @@
 class SensorInterface{
   public:
     int interfaceType;
-    int ioID;
 };
 
 class EncoderInterface:public SensorInterface{

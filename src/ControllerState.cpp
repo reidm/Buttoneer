@@ -63,13 +63,8 @@ void ControllerState::createButtons(){
   Serial.println("Creating buttons!");
 
   int numButtons = _sensorFactory->getNumButtons();
-  for (int i = 0; i<numButtons; i++){
-    _sensorFactory->getNextButton();
-  }
+  _buttons = _sensorFactory->getButtons(); //just one for now..
 
-  /*do{
-      _buttons + sizeof(_buttons) * _numButtons = _sensorFactory->getNextButton();
-  } while (_buttons[_numButtons++] != NULL);*/
 }
 
 void ControllerState::handleEVQ(){
@@ -88,6 +83,8 @@ void ControllerState::handleEVQ(){
   }
 }
 
-void ControllerState::ping(){
+void ControllerState::passButtonInterrupt(int ioID){
   Serial.println("PING!!");
+  Serial.println(ioID);
+  _buttons->handleInterrupt(); // _buttons[ioID]
 }

@@ -25,6 +25,15 @@ IOHandler::IOHandler(){
   _ev = new PushEvent();
 }
 
+
+//Figure out why this doesn't work (or how to make it work)
+//This function won't give extended elements from ButtonInterface, converts it to SensorInterface
+/*void IOHandler::addInterface(SensorInterface* interface){
+  _interface = interface;
+  _ev->setSensor(interface);
+  return;
+}*/
+
 void IOHandler::addSubscriber(ControllerState* cs){
   _subscriber = cs;
   _subscribedTo = true;
@@ -34,4 +43,8 @@ void IOHandler::_sendPushToSubscriber(){
   if(_subscribedTo){
     _subscriber->addPush(_ev);
   }
+}
+
+void IOHandler::setID(int ioID){
+  _ioID = ioID;
 }

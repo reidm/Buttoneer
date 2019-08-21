@@ -49,7 +49,6 @@ void setup() {
     encInt[4]->pinR = ENCODER_4_PIN_R;
     encInt[4]->buttonMapL = ENCODER_4_BUTTON_L;
     encInt[4]->buttonMapR = ENCODER_4_BUTTON_R;
-    encInt[4]->ioID = 4;
     enc[4] = new Encoder();
     enc[4]->setup(encInt[4]);
     //enableInterrupt(ENCODER_4_PIN_L, handleEncoderInterrupt4, CHANGE);
@@ -68,5 +67,5 @@ void handleEncoderInterrupt4(){
 
 void interruptButton0(){
   Serial.println("Globar handle button 0");
-  cs->ping();
+  cs->passButtonInterrupt(0);
 }

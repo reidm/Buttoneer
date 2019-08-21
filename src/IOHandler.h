@@ -30,12 +30,15 @@ class IOHandler{
   public:
     IOHandler();
     void addSubscriber(ControllerState* cs);
+    //void addInterface(SensorInterface* interface);
+    void setID(int ioID);
   protected:
     PushEvent* _ev;
     void _sendPushToSubscriber();
     bool _subscribedTo;
+    int _ioID;
     ControllerState* _subscriber;
-    SensorInterface* _interface;
+    //SensorInterface* _interface;
 };
 
 #endif

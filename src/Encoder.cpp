@@ -25,7 +25,7 @@ Encoder::Encoder(){}
 void Encoder::setup(EncoderInterface* enc_int){
   _interface = enc_int;
   _ev->setSensor(_interface);
-  Serial.println(_interface->ioID);
+  Serial.println(_ioID);
   pinMode(_interface->pinL, INPUT_PULLUP);
   pinMode(_interface->pinR, INPUT_PULLUP);
   Serial.print("Setting pins ");

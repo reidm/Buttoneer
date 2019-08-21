@@ -38,7 +38,8 @@ class ControllerState{
 
     //factory callers
     void createButtons();
-    void ping();
+    void passButtonInterrupt(int ioID);
+
   private:
     SensorFactory* _sensorFactory;
     ButtoneerHID* _hid;

@@ -28,6 +28,7 @@ class Button:public IOHandler{
     Button();
     //void setup(EncoderInterface* enc_int);
     void handleInterrupt();
+    void addInterface(ButtonInterface* binterface);
 
   private:
     ButtonInterface* _interface;

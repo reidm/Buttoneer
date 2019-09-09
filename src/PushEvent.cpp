@@ -34,6 +34,12 @@ bool PushEvent::isEncoderEvent(){
   return false;
 }
 
+bool PushEvent::isButtonEvent(){
+  if (_sensor->interfaceType == BUTTON_INTERFACE)
+    return true;
+  return false;
+}
+
 void PushEvent::setSensor(SensorInterface* sensor){
   _sensor = sensor;
 }

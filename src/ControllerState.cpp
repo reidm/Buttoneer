@@ -73,13 +73,15 @@ void ControllerState::createButtons(){
 void ControllerState::handleEVQ(){
   if(!q.isEmpty()){
     q.pop(&this_ev);
-    if(this_ev->isEncoderEvent()){
+    if(this_ev->isEncoderEvent()){ /* Encoder Timing*/
       unsigned long diff = millis() - this_ev->getPushTime();
       if(diff > ENCODER_HOLD){
         _hid->removePush(this_ev->getButton());
       } else {
         q.push(&this_ev);
       }
+    } else if(this_ev->isButtonEvent()) {
+      Serial.println("passing button push event back to button for timing etc.<new>");
     } else {
       q.push(&this_ev);
     }

@@ -35,6 +35,7 @@ class PushEvent{
     int getLastButton();
     bool checkForButton();
     bool isEncoderEvent();
+    bool isButtonEvent();
   private:
     SensorInterface* _sensor;
     int _button;

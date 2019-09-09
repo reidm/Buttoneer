@@ -31,14 +31,17 @@ void Button::addInterface(ButtonInterface* binterface){
 }
 
 void Button::handleInterrupt(){
+  bool val = digitalRead(_interface->pin);
   Serial.print("Button handling interrupt: ");
   Serial.println(_ioID);
-  Serial.print("Reading pin:");
-  Serial.println(_interface->pin);
-  bool val = digitalRead(_interface->pin);
-  Serial.print("Value is: ");
-  Serial.println(val);
-  if(digitalRead(_interface->pin) == BUTTON_PUSHED){
+  /*Serial.print("Reading pin:");
+  Serial.println(_interface->pin);*/
+  /*Serial.print("Value is: ");
+  Serial.println(val);*/
+  if(val == BUTTON_PUSHED){
     Serial.println("Handle button push");
+    //_sendPushToSubscriber();
+  }if(val == BUTTON_OPEN){
+    Serial.println("Handle button release");
   }
 }

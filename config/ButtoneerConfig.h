@@ -21,6 +21,6 @@
 #define ButtoneerConfig_h
 
 //Encoder defineable options
-#define ENCODER_4 ON
+#define ENCODER_4 OFF
 
 #endif

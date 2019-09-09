@@ -65,12 +65,5 @@ void handleEncoderInterrupt4(){
   enc[4]->handleInterrupt();
 }
 
-void interruptButton0(){
-  Serial.println("Global handle button 0");
-  cs->passButtonInterrupt(0);
-}
-
-void interruptButton1(){
-  Serial.println("Global handle button 1");
-  cs->passButtonInterrupt(1);
-}
+void interruptButton0(){ cs->passButtonInterrupt(0); }
+void interruptButton1(){ cs->passButtonInterrupt(1); }

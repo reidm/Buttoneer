@@ -56,8 +56,8 @@ Button** SensorFactory::getButtons(){
   #endif
   _interfaceIDIterator++;
   _buttonIterator++;
-  #if(BUTTON_ENABLED_0 == ON)
-    Serial.println("Binding button 0");
+  #if(BUTTON_ENABLED_1 == ON)
+    Serial.println("Binding button 1");
     buttons[_buttonIterator] = new Button();
     bi = new ButtonInterface();
     bi->pin = BUTTON_PIN_1;

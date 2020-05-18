@@ -29,7 +29,7 @@ Joystick_ Joystick;
 #define SAMPLE_PER_LOOP 1
 
 #define ENCODER_HOLD 2000
-#define ENCODER_DEBOUNCE 3
+#define ENCODER_DEBOUNCE 1
 
 #define BUTTON_INST -1
 #define BUTTON_OFF 0
@@ -67,8 +67,8 @@ int encoder0Pos = 0;
 
 
 int HOLD_MAP[] = {
-  BUTTON_INST, 11, BUTTON_INST, BUTTON_INST, 12,
-  13, 15, 17, BUTTON_INST, 22,
+  BUTTON_INST, BUTTON_INST, BUTTON_INST, BUTTON_INST, BUTTON_INST,
+  13, 15, BUTTON_INST, BUTTON_INST, BUTTON_INST,
   23, 24, 25, BUTTON_INST, 26
 };
 
@@ -109,7 +109,7 @@ void loop() {
       }
     } else {
       holdManage(loopState);
-    } 
+    }
   } else {
     if(buttonState[loopState] == BUTTON_PUSHED){
       remPush(loopState);
@@ -125,7 +125,7 @@ void loop() {
         Joystick.setButton(BUTTON_SET[loopState], LOW);
         Joystick.setButton(HOLD_MAP[loopState], LOW);
       }
-    } 
+    }
     deESD[loopState] = 0;
   }
 
@@ -137,9 +137,9 @@ void loop() {
   rotaryState[rotAIdx] = digitalRead(rotarySet[rotAIdx]);
   rotaryState[rotBIdx] = digitalRead(rotarySet[rotBIdx]);
   if ((rotaryLastState[rotAIdx] == LOW) && (rotaryState[rotAIdx] == HIGH)) {
-    if (rotaryState[rotBIdx] == LOW) 
+    if (rotaryState[rotBIdx] == LOW)
       encoder0Pos--;
-    else 
+    else
       encoder0Pos++;
   }
 
@@ -168,7 +168,7 @@ void addLongPush(int button){
   buttonState[button] = BUTTON_HELD_LONG;
   buttonHoldCount[button] = BUTTON_PUSH_LENGTH;
   Joystick.setButton(HOLD_MAP[button], HIGH);
-  
+
 }
 void holdManage(int button){
   if(buttonState[loopState] == BUTTON_PUSHED_SHORT || buttonState[loopState] == BUTTON_HELD_LONG){
@@ -204,7 +204,7 @@ void remPush(int button){
     buttonState[button] = BUTTON_OFF;
     deESD[button] = 0;
 
-  } 
+  }
 }
 
 void encoderClear(int encoder){
